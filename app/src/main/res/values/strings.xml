@@ -14,4 +14,8 @@
     <string name="don_t_have_an_account">Don’t have an account?</string>
     <string name="create_account">Create Account</string>
     <string name="or_log_in_with">or login with</string>
+    <string name="username">Username</string>
+    <string name="hint_enter_username">Enter username</string>
+    <string name="register">Register</string>
+    <string name="have_an_account">Have an account?</string>
 </resources>
