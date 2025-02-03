@@ -13,29 +13,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class LoginFragment extends Fragment {
-    TextView tv_CreateAccount;
+public class RegisterFragment extends Fragment {
+    TextView tv_BackToLogin;
 
-    public LoginFragment() {}
+    public RegisterFragment() {}
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tv_CreateAccount = view.findViewById(R.id.tv_CreateAccount);
-        tv_CreateAccount.setOnClickListener(view1 -> {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+        tv_BackToLogin = view.findViewById(R.id.tv_BacktoLogin);
+        tv_BackToLogin.setOnClickListener(view1 -> {
+            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
         });
-
     }
 }
