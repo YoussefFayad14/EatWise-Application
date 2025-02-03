@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">FoodApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email">Email</string>
+    <string name="hint_enter_your_email">Enter your Email</string>
+    <string name="password">Password</string>
+    <string name="hint_enter_your_password">Enter your Password</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="login_as_guest">Login as Guest</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="create_account">Create Account</string>
+    <string name="or_log_in_with">or login with</string>
 </resources>
