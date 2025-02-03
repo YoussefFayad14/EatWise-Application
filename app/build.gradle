@@ -38,6 +38,10 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
-    // Import Lottie
+    // Lottie
     implementation "com.airbnb.android:lottie:6.0.0"
+
+    implementation "androidx.navigation:navigation-fragment:2.8.6"
+    implementation "androidx.navigation:navigation-ui:2.8.6"
+
 }
