@@ -18,4 +18,7 @@
     <string name="hint_enter_username">Enter username</string>
     <string name="register">Register</string>
     <string name="have_an_account">Have an account?</string>
+    <string name="what_do_you_search_for">what do you search for?</string>
+    <string name="home">Home</string>
+    <string name="calendar">calendar</string>
 </resources>
