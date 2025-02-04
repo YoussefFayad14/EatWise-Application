@@ -1,0 +1,8 @@
+<resources>
+    <style name="CustomBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <!-- Disable the default ripple effect -->
+        <item name="itemBackground">@drawable/bottom_nav_selected_item</item>
+        <item name="itemIconTint">@color/bottom_nav_icon_selector</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+</resources>

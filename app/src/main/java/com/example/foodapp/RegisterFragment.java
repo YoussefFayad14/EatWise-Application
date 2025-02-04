@@ -10,11 +10,13 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
 public class RegisterFragment extends Fragment {
     TextView tv_BackToLogin;
+    Button btnRegister;
 
     public RegisterFragment() {}
 
@@ -33,8 +35,14 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tv_BackToLogin = view.findViewById(R.id.tv_BacktoLogin);
+        btnRegister = view.findViewById(R.id.btn_register);
+
         tv_BackToLogin.setOnClickListener(view1 -> {
             Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+        });
+
+        btnRegister.setOnClickListener(view1 -> {
+            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_homeFragment);
         });
     }
 }

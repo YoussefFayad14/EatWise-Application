@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_enter_username"
             android:padding="12dp"
-            android:background="@drawable/rounded_edittext"
+            android:background="@drawable/edittext_shape"
             android:textSize="16sp"
             android:inputType="text"
             android:layout_marginTop="8dp"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_enter_your_email"
             android:padding="12dp"
-            android:background="@drawable/rounded_edittext"
+            android:background="@drawable/edittext_shape"
             android:textSize="16sp"
             android:inputType="textEmailAddress"
             android:layout_marginTop="8dp"
@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/hint_enter_your_password"
             android:padding="12dp"
-            android:background="@drawable/rounded_edittext"
+            android:background="@drawable/edittext_shape"
             android:textSize="16sp"
             android:inputType="textPassword"
             android:layout_marginTop="8dp"
@@ -97,6 +97,7 @@
             />
 
         <Button
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:backgroundTint="@color/main_color"
