@@ -1,8 +1,31 @@
 <resources>
     <style name="CustomBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-        <!-- Disable the default ripple effect -->
         <item name="itemBackground">@drawable/bottom_nav_selected_item</item>
         <item name="itemIconTint">@color/bottom_nav_icon_selector</item>
         <item name="android:elevation">0dp</item>
     </style>
+
+    <style name="PopularImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CountryImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CategoryImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="MealDayImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+        <item name="strokeColor">@color/main_color</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
 </resources>
+

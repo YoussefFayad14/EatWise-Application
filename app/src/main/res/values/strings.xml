@@ -21,4 +21,12 @@
     <string name="what_do_you_search_for">what do you search for?</string>
     <string name="home">Home</string>
     <string name="calendar">calendar</string>
+    <string name="check_now">Check Now</string>
+    <string name="meal_day">Meal Day</string>
+    <string name="categories">Categories</string>
+    <string name="countries">Countries</string>
+    <string name="most_popular_in">Most Popular in</string>
+    <string name="egypt">Egypt</string>
+    <string name="sample_card_title">Sample Card Title</string>
+    <string name="sample_card_country_title">USA</string>
 </resources>
