@@ -42,7 +42,7 @@ public class RegisterFragment extends Fragment {
         });
 
         btnRegister.setOnClickListener(view1 -> {
-            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_homeFragment);
+            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_mainFragment);
         });
     }
 }

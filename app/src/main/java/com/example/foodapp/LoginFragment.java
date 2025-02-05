@@ -44,11 +44,11 @@ public class LoginFragment extends Fragment {
         });
 
         btnLoginAsGuest.setOnClickListener(view1 -> {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mainFragment);
         });
 
         btnLoginAsUser.setOnClickListener(view1 -> {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_mainFragment);
         });
 
     }

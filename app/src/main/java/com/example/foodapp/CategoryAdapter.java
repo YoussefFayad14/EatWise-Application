@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -16,12 +17,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private Context context;
     private List<String> categoryList;
-    private Fragment parentFragment;
 
-    public CategoryAdapter(Context context, List<String> categories, Fragment parentFragment) {
+    public CategoryAdapter(Context context, List<String> categories) {
         this.context = context;
         this.categoryList = categories;
-        this.parentFragment = parentFragment;
     }
 
     @NonNull
@@ -37,10 +36,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.itemTitle.setText(category);
         holder.itemImage.setImageResource(R.drawable.ic_launcher_foreground);
         holder.itemView.setOnClickListener(view -> {
-            FragmentTransaction transaction = parentFragment.getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(parentFragment.getId(), new MealDetailsFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mealDetailsFragment);
         });
     }
 
