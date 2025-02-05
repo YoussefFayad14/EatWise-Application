@@ -29,4 +29,8 @@
     <string name="egypt">Egypt</string>
     <string name="sample_card_title">Sample Card Title</string>
     <string name="sample_card_country_title">USA</string>
+    <string name="remove">Remove</string>
+    <string name="description_of_the_meal">Description of the meal</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="add_to_plan">Add to Plan</string>
 </resources>
