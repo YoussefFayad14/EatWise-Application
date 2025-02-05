@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -16,12 +17,10 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularV
 
     private Context context;
     private List<String> popularMealList;
-    private Fragment parentFragment;
 
-    public PopularAdapter(Context context, List<String> PopularMeals, Fragment parentFragment) {
+    public PopularAdapter(Context context, List<String> PopularMeals) {
         this.context = context;
         this.popularMealList = PopularMeals;
-        this.parentFragment = parentFragment;
 
     }
 
@@ -38,10 +37,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularV
         holder.itemTitle.setText(popularMeal);
         holder.itemImage.setImageResource(R.drawable.ic_launcher_foreground);
         holder.itemView.setOnClickListener(view -> {
-            FragmentTransaction transaction = parentFragment.getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(parentFragment.getId(), new MealDetailsFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mealDetailsFragment);
         });
     }
 

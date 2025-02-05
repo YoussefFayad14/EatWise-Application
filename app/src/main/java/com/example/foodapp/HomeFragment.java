@@ -3,6 +3,7 @@ package com.example.foodapp;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,16 +41,13 @@ public class HomeFragment extends Fragment {
         recyclerView2.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView3.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        recyclerView1.setAdapter(new CategoryAdapter(getContext(), getSampleCategories(),getParentFragment()));
-        recyclerView2.setAdapter(new CountryAdapter(getContext(), getSampleCountries(),getParentFragment()));
-        recyclerView3.setAdapter(new PopularAdapter(getContext(), getSamplePopularMeals(),getParentFragment()));
+        recyclerView1.setAdapter(new CategoryAdapter(getContext(), getSampleCategories()));
+        recyclerView2.setAdapter(new CountryAdapter(getContext(), getSampleCountries()));
+        recyclerView3.setAdapter(new PopularAdapter(getContext(), getSamplePopularMeals()));
 
 
         View.OnClickListener clickListener = click -> {
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(getParentFragment().getId(), new MealDetailsFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mealDetailsFragment);
         };
 
         frameMealDay.setOnClickListener(clickListener);

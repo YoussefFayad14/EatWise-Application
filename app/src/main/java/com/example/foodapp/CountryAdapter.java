@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -16,14 +17,11 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
 
     private Context context;
     private List<String> countryList;
-    private Fragment parentFragment;
 
 
-    public CountryAdapter(Context context, List<String> Countries, Fragment parentFragment) {
+    public CountryAdapter(Context context, List<String> Countries) {
         this.context = context;
         this.countryList = Countries;
-        this.parentFragment = parentFragment;
-
     }
 
     @NonNull
@@ -38,10 +36,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
         String country = countryList.get(position);
         holder.itemImage.setImageResource(R.drawable.ic_launcher_foreground);
         holder.itemView.setOnClickListener(view -> {
-            FragmentTransaction transaction = parentFragment.getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(parentFragment.getId(), new SearchFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment);
         });
     }
 

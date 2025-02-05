@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,10 +68,7 @@ public class MainFragment extends Fragment {
         transaction.commit();
     }
     private void navigateToSearchFragment() {
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(this.getId(), new SearchFragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment);
     }
 
     @Override
