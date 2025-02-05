@@ -37,8 +37,6 @@ public class MainFragment extends Fragment {
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
         tvSearchToolbar = view.findViewById(R.id.tv_search_toolbar);
 
-        replaceFragment(new HomeFragment());
-
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home:
@@ -73,6 +71,12 @@ public class MainFragment extends Fragment {
         transaction.replace(this.getId(), new SearchFragment());
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        replaceFragment(new HomeFragment());
         bottomNavigationView.setSelectedItemId(R.id.home);
     }
 }
