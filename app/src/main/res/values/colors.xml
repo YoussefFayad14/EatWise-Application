@@ -5,4 +5,7 @@
     <color name="splash_background">#F5E8D7</color>
     <color name="dark_blue">#06004F</color>
     <color name="main_color">#EF603F</color>
+    <color name="dark_green_color">#027367</color>
+    <color name="white2">#EEEEEE</color>
+    <color name="gray">#808080</color>
 </resources>

@@ -59,7 +59,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         public FavoriteViewHolder(View itemView) {
             super(itemView);
             mealName = itemView.findViewById(R.id.mealName);
-            mealDescription = itemView.findViewById(R.id.mealDescription);
+            mealDescription = itemView.findViewById(R.id.mealCountry);
             mealImage = itemView.findViewById(R.id.mealImage);
             removeButton = itemView.findViewById(R.id.removeButton);
             addToPlanButton = itemView.findViewById(R.id.addToPlanButton);
