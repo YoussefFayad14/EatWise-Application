@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MealDetailsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/back_Button2"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackground"
+                    android:src="@drawable/baseline_arrow_back_32"/>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.8"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_meal_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/meal_details"
+                    android:textColorHint="@color/main_color"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    />
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <VideoView
+                    android:id="@+id/video"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="8dp"/>
+
+                <TextView
+                    android:id="@+id/tv_mealName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/example_meal_name"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_blue"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/category"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/example_category"
+                        android:layout_marginStart="12dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/dark_blue"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/country"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/example_country"
+                        android:layout_marginStart="20dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/dark_blue"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ingredient"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_ingredient"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:text="@string/example_ingredient"
+                        android:textSize="14sp"
+                        android:textColor="@color/dark_blue"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/instructions"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_instructions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:text="@string/example_instructions"
+                        android:textSize="14sp"
+                        android:textColor="@color/dark_blue"
+                        />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_add_meal_favourite"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/main_color"
+                    android:text="@string/add_favourite"
+                    android:textSize="24sp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="20dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

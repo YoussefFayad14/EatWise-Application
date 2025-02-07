@@ -1,3 +1,60 @@
 <resources>
-    <string name="app_name">FoodApp</string>
+    <string name="app_name">Food</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email">Email</string>
+    <string name="hint_enter_your_email">Enter your Email</string>
+    <string name="password">Password</string>
+    <string name="hint_enter_your_password">Enter your Password</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="login_as_guest">Login as Guest</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="create_account">Create Account</string>
+    <string name="or_log_in_with">or login with</string>
+    <string name="username">Username</string>
+    <string name="hint_enter_username">Enter username</string>
+    <string name="register">Register</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="what_do_you_search_for">what do you search for?</string>
+    <string name="home">Home</string>
+    <string name="calendar">calendar</string>
+    <string name="check_now">Check Now</string>
+    <string name="meal_day">Meal Day</string>
+    <string name="categories">Categories</string>
+    <string name="countries">Countries</string>
+    <string name="most_popular_in">Most Popular in</string>
+    <string name="egypt">Egypt</string>
+    <string name="sample_card_title">Sample Card Title</string>
+    <string name="sample_card_country_title">USA</string>
+    <string name="remove">Remove</string>
+    <string name="description_of_the_meal">Description of the meal</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="add_to_plan">Add to Plan</string>
+    <string name="logout">Logout</string>
+    <string name="welcome_user">Welcome Youssef</string>
+    <string name="name">Name</string>
+    <string name="profile_username">Youssef</string>
+    <string name="profile_email">yousseffayad2025@gmail.com</string>
+    <string name="meal_plan">Meal Plan</string>
+    <string name="sunday_2_february">Sunday, 2 February</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="country">Country</string>
+    <string name="all">All</string>
+    <string name="category">Category</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="search">Search</string>
+    <string name="add_favourite">Add Favourite</string>
+    <string name="meal_details">Meal Details</string>
+    <string name="example_meal_name">Lamb Pilaf (Plov)</string>
+    <string name="example_category">Rice</string>
+    <string name="example_country">Russia</string>
+    <string name="example_ingredient">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
+    <string name="instructions">Instructions</string>
+    <string name="example_instructions">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
+    <string name="default_web_client_id">921088706382-vfnt0i84hfnlnm0vl4mku08jv1m6a1mr.apps.googleusercontent.com</string>
+
 </resources>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:context=".ProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/welcomeMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_user"
+            android:layout_gravity="center"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="@color/main_color"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="18sp"
+            android:textColor="@color/dark_blue"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp" />
+
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/profile_username"
+            android:padding="12dp"
+            android:background="@drawable/edittext_shape"
+            android:textSize="16sp"
+            android:inputType="text"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp"
+            android:clickable="false"
+            android:enabled="false"/>
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            android:textSize="18sp"
+            android:textColor="@color/dark_blue"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/profile_email"
+            android:padding="12dp"
+            android:background="@drawable/edittext_shape"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp"
+            android:clickable="false"
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/main_color"
+            android:text="@string/logout"
+            android:textSize="24sp"
+            android:layout_marginTop="48dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="20dp" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

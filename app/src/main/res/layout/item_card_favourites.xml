@@ -1,0 +1,88 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemCard"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:radius="16dp"
+    app:cardBackgroundColor="@color/splash_background"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/mealImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:layout_gravity=""
+            android:src="@drawable/img_meal_day"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/mealName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meal_name"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/mealCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/country"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/addToPlanButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_to_plan"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@android:color/holo_green_light"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <Button
+                        android:id="@+id/removeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/remove"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="@android:color/holo_red_light"
+                        />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

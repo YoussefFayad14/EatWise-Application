@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/frameMealDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imageMealDay"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/img_meal_day"
+                            app:shapeAppearanceOverlay="@style/MealDayImageShape"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvMealDay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:text="@string/meal_day"
+                            android:textSize="20sp"
+                            android:textColor="@color/main_color"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="55dp"
+                            android:layout_marginTop="60dp"
+                            android:clickable="true"
+                            />
+
+                        <Button
+                            android:id="@+id/btnCheckNow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/check_now"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:backgroundTint="@color/main_color"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="120dp"/>
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/categories"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="2dp"
+                    android:textSize="18sp"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView1"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/countries"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="2dp"
+                    android:textSize="18sp"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView2"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/most_popular_in"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/egypt"
+                        android:textColor="@color/main_color"
+                        android:textSize="18sp"
+                        android:layout_marginStart="4dp"
+                        />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView3"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>
