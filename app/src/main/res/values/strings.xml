@@ -48,4 +48,11 @@
     <string name="ingredient">Ingredient</string>
     <string name="search">Search</string>
     <string name="add_favourite">Add Favourite</string>
+    <string name="meal_details">Meal Details</string>
+    <string name="example_meal_name">Lamb Pilaf (Plov)</string>
+    <string name="example_category">Rice</string>
+    <string name="example_country">Russia</string>
+    <string name="example_ingredient">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
+    <string name="instructions">Instructions</string>
+    <string name="example_instructions">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
 </resources>
