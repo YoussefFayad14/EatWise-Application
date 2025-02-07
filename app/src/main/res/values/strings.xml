@@ -43,4 +43,9 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="country">Country</string>
+    <string name="all">All</string>
+    <string name="category">Category</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="search">Search</string>
+    <string name="add_favourite">Add Favourite</string>
 </resources>
