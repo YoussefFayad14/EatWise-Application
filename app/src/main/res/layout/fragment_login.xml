@@ -34,6 +34,16 @@
             />
 
         <TextView
+            android:id="@+id/tv_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_gravity="center"
+            />
+
+        <TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,10 +100,12 @@
             android:layout_marginVertical="12dp">
 
             <CheckBox
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_vertical"
-                android:buttonTint="@color/main_color"
+                android:background="@drawable/checkbox_selector"
+                android:button="@null"
+                android:checked="false"
                 />
 
             <TextView
@@ -110,6 +122,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tv_forgetPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/forget_password"
@@ -191,23 +204,25 @@
 
         <ImageButton
             android:id="@+id/btn_google_login"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
             android:background="@drawable/img_google"
             />
 
         <ImageButton
             android:id="@+id/btn_facebook_login"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginHorizontal="16dp"
             android:background="@drawable/img_facebook"
             />
 
         <ImageButton
             android:id="@+id/btn_twitter_login"
-            android:layout_width="51dp"
-            android:layout_height="51dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
             android:background="@drawable/img_twitter"
             />
     </LinearLayout>
