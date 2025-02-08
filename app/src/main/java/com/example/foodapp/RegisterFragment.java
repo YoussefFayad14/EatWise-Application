@@ -1,5 +1,6 @@
 package com.example.foodapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,8 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,24 +33,22 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-
 public class RegisterFragment extends Fragment {
     private EditText etUsername, etEmail, etPassword;
     private TextView tv_BackToLogin, tvErrorMessage;
     private Button btnRegister;
-    private ImageButton btnGoogleRegister, btnFacebookRegister, btnTwitterRegister;
+    private ImageButton btnGoogleRegister;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_UP = 200;
 
-
     public RegisterFragment() {}
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -60,6 +61,7 @@ public class RegisterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -70,15 +72,36 @@ public class RegisterFragment extends Fragment {
         tvErrorMessage = view.findViewById(R.id.tv_error_message);
         btnRegister = view.findViewById(R.id.btn_register);
         btnGoogleRegister = view.findViewById(R.id.btn_google_register);
-        btnFacebookRegister = view.findViewById(R.id.btn_facebook_register);
-        btnTwitterRegister = view.findViewById(R.id.btn_twitter_register);
 
-        tv_BackToLogin.setOnClickListener(view1 -> {
-            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+        etPassword.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                int drawableEnd = 2;
+                if (event.getRawX() >= (etPassword.getRight() - etPassword.getCompoundDrawables()[drawableEnd].getBounds().width())) {
+                    togglePasswordVisibility();
+                    return true;
+                }
+            }
+            return false;
         });
+
+        tv_BackToLogin.setOnClickListener(view1 ->
+                Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
+        );
         btnRegister.setOnClickListener(view1 -> registerUser());
         btnGoogleRegister.setOnClickListener(view1 -> signInWithGoogle());
     }
+
+    private void togglePasswordVisibility() {
+        if (etPassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_24, 0);
+        } else {
+            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_off_24, 0);
+        }
+        etPassword.setSelection(etPassword.getText().length());
+    }
+
 
     private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -88,28 +111,31 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_UP){
+        if (requestCode == RC_SIGN_UP && data != null) {
             try {
                 GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
                 if (account != null) {
                     firebaseAuthWithGoogle(account);
                 }
             } catch (ApiException e) {
-                tvErrorMessage.setText("Google sign-in failed. Try again.");
+                tvErrorMessage.setText("Google sign-in failed: " + e.getStatusCode());
             }
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        btnRegister.setEnabled(false);
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener(authResult -> {
+                    btnRegister.setEnabled(true);
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_mainFragment);
+                        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
                     }
                 })
                 .addOnFailureListener(e -> {
+                    btnRegister.setEnabled(true);
                     tvErrorMessage.setText("Authentication failed: " + e.getMessage());
                 });
     }
@@ -122,27 +148,28 @@ public class RegisterFragment extends Fragment {
             tvErrorMessage.setText("Email and Password cannot be empty");
             return;
         }
-        if (password.length() < 6){
+        if (password.length() < 6) {
             tvErrorMessage.setText("Password must be at least 6 characters");
             return;
         }
 
+        btnRegister.setEnabled(false);
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult ->
-                        Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_mainFragment)
-                )
+                .addOnSuccessListener(authResult -> {
+                    btnRegister.setEnabled(true);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
+                })
                 .addOnFailureListener(e -> {
-                        if (e instanceof FirebaseAuthInvalidCredentialsException)
-                            tvErrorMessage.setText("Invalid email format");
-                        else if (e instanceof FirebaseAuthUserCollisionException) {
-                            tvErrorMessage.setText("Email already in use");
-                        } else if (e instanceof FirebaseNetworkException) {
-                            tvErrorMessage.setText("Network error. Check your connection");
-                        } else {
-                            tvErrorMessage.setText(e.getMessage());
-                        }
+                    btnRegister.setEnabled(true);
+                    if (e instanceof FirebaseAuthInvalidCredentialsException)
+                        tvErrorMessage.setText("Invalid email format");
+                    else if (e instanceof FirebaseAuthUserCollisionException) {
+                        tvErrorMessage.setText("Email already in use");
+                    } else if (e instanceof FirebaseNetworkException) {
+                        tvErrorMessage.setText("Network error. Check your connection");
+                    } else {
+                        tvErrorMessage.setText(e.getMessage());
+                    }
                 });
-
     }
-
 }
