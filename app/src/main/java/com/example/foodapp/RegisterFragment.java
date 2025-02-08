@@ -1,7 +1,11 @@
 package com.example.foodapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -131,6 +135,7 @@ public class RegisterFragment extends Fragment {
                     btnRegister.setEnabled(true);
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
+                        saveUserLoginState();
                         Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
                     }
                 })
@@ -157,7 +162,11 @@ public class RegisterFragment extends Fragment {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     btnRegister.setEnabled(true);
-                    Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        saveUserLoginState();
+                        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
+                    }
                 })
                 .addOnFailureListener(e -> {
                     btnRegister.setEnabled(true);
@@ -172,4 +181,11 @@ public class RegisterFragment extends Fragment {
                     }
                 });
     }
+    private void saveUserLoginState() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("IS_LOGGED_IN", true);
+        editor.apply();
+    }
+
 }

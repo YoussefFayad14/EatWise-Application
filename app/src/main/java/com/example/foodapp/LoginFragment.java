@@ -1,7 +1,10 @@
 package com.example.foodapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,6 +109,15 @@ public class LoginFragment extends Fragment {
         }
         etPassword.setSelection(etPassword.getText().length());
     }
+
+    public void saveUserLoginState(String uid) {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("USER_UID", uid);
+        editor.putBoolean("IS_LOGGED_IN", true);
+        editor.apply();
+    }
+
     private void resetPassword() {
         String email = etEmail.getText().toString().trim();
 
@@ -147,7 +159,11 @@ public class LoginFragment extends Fragment {
                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                     auth.signInWithCredential(credential).addOnCompleteListener(authTask -> {
                         if (authTask.isSuccessful()) {
-                            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_mainFragment);
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                saveUserLoginState(user.getUid());
+                                Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_mainFragment);
+                            }
                         } else {
                             tvErrorMessage.setText("Google login failed: " + authTask.getException().getMessage());
                         }
@@ -177,6 +193,7 @@ public class LoginFragment extends Fragment {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null && user.isEmailVerified()) {
+                        saveUserLoginState(user.getUid());
                         Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_mainFragment);
                     } else {
                         tvErrorMessage.setText("Email not verified. Please check your email.");

@@ -101,23 +101,6 @@
             android:layout_marginHorizontal="28dp"
             android:layout_marginVertical="12dp">
 
-            <CheckBox
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/checkbox_selector"
-                android:button="@null"
-                android:checked="false"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/remember_me"
-                android:textColor="@color/dark_blue"
-                android:textSize="16sp"
-                android:layout_marginStart="4dp"
-                />
             <Space
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
