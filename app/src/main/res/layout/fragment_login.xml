@@ -91,6 +91,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="20dp"
+            android:drawableEnd="@drawable/baseline_visibility_off_24"
+            android:drawablePadding="8dp"
             />
 
         <LinearLayout
@@ -210,27 +212,7 @@
             android:background="@drawable/img_google"
             />
 
-        <ImageButton
-            android:id="@+id/btn_facebook_login"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@drawable/img_facebook"
-            />
-
-        <ImageButton
-            android:id="@+id/btn_twitter_login"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginHorizontal="16dp"
-            android:background="@drawable/img_twitter"
-            />
     </LinearLayout>
-
-
-
-
-
 
     </LinearLayout>
 
