@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterFragment">
+    tools:context=".ui.register.ui.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login"
                 android:textColor="@color/main_color"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:layout_marginStart="6dp"
                 />
             <Space
@@ -156,7 +156,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/or_log_in_with"
+        android:text="@string/or_register_with"
         android:textColor="@color/dark_blue"
         android:textSize="20sp"
         android:layout_gravity="center_horizontal"

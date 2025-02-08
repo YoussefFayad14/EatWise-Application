@@ -1,9 +1,7 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.register.ui;
 
-import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,34 +22,31 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.foodapp.R;
+import com.example.foodapp.ui.register.RegisterContract;
+import com.example.foodapp.ui.register.presenter.RegisterPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.gms.tasks.Task;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements RegisterContract.View {
     private EditText etUsername, etEmail, etPassword;
     private TextView tv_BackToLogin, tvErrorMessage;
     private Button btnRegister;
     private ImageButton btnGoogleRegister;
-    private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_UP = 200;
+    private RegisterPresenter presenter;
 
     public RegisterFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        presenter = new RegisterPresenter(this, requireContext());
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -91,7 +86,13 @@ public class RegisterFragment extends Fragment {
         tv_BackToLogin.setOnClickListener(view1 ->
                 Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment)
         );
-        btnRegister.setOnClickListener(view1 -> registerUser());
+
+        btnRegister.setOnClickListener(view1 ->
+                presenter.registerUser(
+                        etUsername.getText().toString().trim(),
+                        etEmail.getText().toString().trim(),
+                        etPassword.getText().toString().trim())
+        );
         btnGoogleRegister.setOnClickListener(view1 -> signInWithGoogle());
     }
 
@@ -106,7 +107,6 @@ public class RegisterFragment extends Fragment {
         etPassword.setSelection(etPassword.getText().length());
     }
 
-
     private void signInWithGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_UP);
@@ -115,77 +115,38 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_UP && data != null) {
-            try {
-                GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
-                if (account != null) {
-                    firebaseAuthWithGoogle(account);
-                }
-            } catch (ApiException e) {
-                tvErrorMessage.setText("Google sign-in failed: " + e.getStatusCode());
+
+        if (requestCode == RC_SIGN_UP) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleGoogleSignInResult(task);
+        }
+    }
+
+    private void handleGoogleSignInResult(Task<GoogleSignInAccount> task) {
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+            if (account != null) {
+                presenter.signInWithGoogle(account);
+            } else {
+                showErrorMessage("Google Sign-In failed. Try again.");
             }
+        } catch (ApiException e) {
+            showErrorMessage("Google Sign-In error: " + e.getStatusCode());
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        btnRegister.setEnabled(false);
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnSuccessListener(authResult -> {
-                    btnRegister.setEnabled(true);
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        saveUserLoginState();
-                        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    btnRegister.setEnabled(true);
-                    tvErrorMessage.setText("Authentication failed: " + e.getMessage());
-                });
+    @Override
+    public void showErrorMessage(String message) {
+        tvErrorMessage.setText(message);
     }
 
-    private void registerUser() {
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            tvErrorMessage.setText("Email and Password cannot be empty");
-            return;
-        }
-        if (password.length() < 6) {
-            tvErrorMessage.setText("Password must be at least 6 characters");
-            return;
-        }
-
-        btnRegister.setEnabled(false);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> {
-                    btnRegister.setEnabled(true);
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user != null) {
-                        saveUserLoginState();
-                        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    btnRegister.setEnabled(true);
-                    if (e instanceof FirebaseAuthInvalidCredentialsException)
-                        tvErrorMessage.setText("Invalid email format");
-                    else if (e instanceof FirebaseAuthUserCollisionException) {
-                        tvErrorMessage.setText("Email already in use");
-                    } else if (e instanceof FirebaseNetworkException) {
-                        tvErrorMessage.setText("Network error. Check your connection");
-                    } else {
-                        tvErrorMessage.setText(e.getMessage());
-                    }
-                });
-    }
-    private void saveUserLoginState() {
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("IS_LOGGED_IN", true);
-        editor.apply();
+    @Override
+    public void navigateToMain() {
+        Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_mainFragment);
     }
 
+    @Override
+    public void setRegisterButtonEnabled(boolean enabled) {
+        btnRegister.setEnabled(enabled);
+    }
 }

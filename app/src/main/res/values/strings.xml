@@ -56,6 +56,7 @@
     <string name="instructions">Instructions</string>
     <string name="example_instructions">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
     <string name="default_web_client_id">921088706382-vfnt0i84hfnlnm0vl4mku08jv1m6a1mr.apps.googleusercontent.com</string>
+    <string name="or_register_with">or Register with</string>
 
 
 </resources>
