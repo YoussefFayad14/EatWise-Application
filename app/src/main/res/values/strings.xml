@@ -24,8 +24,8 @@
     <string name="meal_day">Meal Day</string>
     <string name="categories">Categories</string>
     <string name="countries">Countries</string>
-    <string name="most_popular_in">Most Popular in</string>
-    <string name="egypt">Egypt</string>
+    <string name="most_popular_meals_in">Most Popular Meals</string>
+    <string name="world">World</string>
     <string name="sample_card_title">Sample Card Title</string>
     <string name="sample_card_country_title">USA</string>
     <string name="remove">Remove</string>
@@ -57,6 +57,7 @@
     <string name="example_instructions">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
     <string name="default_web_client_id">921088706382-vfnt0i84hfnlnm0vl4mku08jv1m6a1mr.apps.googleusercontent.com</string>
     <string name="or_register_with">or Register with</string>
+    <string name="area">Area</string>
 
 
 </resources>

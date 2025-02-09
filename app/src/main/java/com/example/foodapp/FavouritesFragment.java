@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodapp.data.model.Meal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +24,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mealList = new ArrayList<>();
-        mealList.add(new Meal("Spaghetti", "Classic Italian pasta with tomato sauce", R.drawable.img_meal_day));
-        mealList.add(new Meal("Pizza", "Delicious cheesy pizza with pepperoni", R.drawable.img_meal_day));
-        mealList.add(new Meal("Salad", "Fresh garden salad with vinaigrette", R.drawable.img_meal_day));
+
     }
 
     @Override
