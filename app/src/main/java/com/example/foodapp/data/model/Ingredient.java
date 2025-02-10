@@ -50,4 +50,7 @@ public class Ingredient {
     public String getImageUrl() {
         return "https://www.themealdb.com/images/ingredients/" + getName() + "-Small.png";
     }
+    public static String getImageUrlByName(String name) {
+        return "https://www.themealdb.com/images/ingredients/" + name + "-Small.png";
+    }
 }

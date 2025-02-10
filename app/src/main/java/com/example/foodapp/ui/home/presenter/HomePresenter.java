@@ -27,6 +27,19 @@ public class HomePresenter {
         this.homeRepository = homeRepository;
         this.locationRepository = locationRepository;
     }
+    public void loadSelectedMeal(String mealId) {
+        homeRepository.fetchMealDetailsFromAPI(mealId,new ApiCallback<MealResponse>(){
+            @Override
+            public void onSuccess(MealResponse response) {
+                view.showMealDetails(response.getMeals().get(0));
+            }
+            @Override
+            public void onFailure(String errorMessage) {
+                view.showMealDetails(null);
+                Log.e("HomePresenter", "Error fetching meal details: " + errorMessage);
+            }
+        });
+    }
     public void loadRandomMeal() {
         homeRepository.fetchRandomMealFromAPI(new ApiCallback<MealResponse>() {
             @Override

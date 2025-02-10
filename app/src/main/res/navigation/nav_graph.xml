@@ -68,7 +68,7 @@
     </fragment>
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.foodapp.MealDetailsFragment"
+        android:name="com.example.foodapp.ui.meal.view.MealDetailsFragment"
         android:label="fragment_meal_details"
         tools:layout="@layout/fragment_meal_details" >
         <action

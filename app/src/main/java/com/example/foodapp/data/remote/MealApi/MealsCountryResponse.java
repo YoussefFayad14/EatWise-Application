@@ -1,14 +1,14 @@
 package com.example.foodapp.data.remote.MealApi;
 
-import com.example.foodapp.data.model.CountryMeal;
+import com.example.foodapp.data.model.Meal;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class MealsCountryResponse {
     @SerializedName("meals")
-    private List<CountryMeal> meals;
+    private List<Meal> meals;
 
-    public List<CountryMeal> getMeals() {
+    public List<Meal> getMeals() {
         return meals;
     }
 }

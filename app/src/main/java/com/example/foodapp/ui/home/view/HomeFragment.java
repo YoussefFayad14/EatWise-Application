@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.model.Area;
 import com.example.foodapp.data.model.CategoryItem;
-import com.example.foodapp.data.model.CountryMeal;
 import com.example.foodapp.data.model.Ingredient;
 import com.example.foodapp.data.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
+
 import java.util.List;
 
 public class HomeFragment extends Fragment implements onClickListener, HomeView {
@@ -68,14 +68,22 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
         return view;
     }
 
-
     @Override
-    public void showRandomMeal(Meal meal) {
-            onItemClick(meal);
+    public void showMealDetails(Meal meal) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("meal", meal);
+        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_mealDetailsFragment, bundle);
     }
 
     @Override
-    public void showPopularMeals(List<CountryMeal> popularMeals, String country) {
+    public void showRandomMeal(Meal meal) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("meal", meal);
+        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_mealDetailsFragment, bundle);
+    }
+
+    @Override
+    public void showPopularMeals(List<Meal> popularMeals, String country) {
         tvCountry.setText(country);
         recyclerView1.setAdapter(new PopularAdapter(getContext(), popularMeals,this));
     }
@@ -95,14 +103,13 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
         recyclerView4.setAdapter(new IngredientAdapter(getContext(), ingredients, this));
     }
 
-
     @Override
     public <T> void onSectionClick(T item) {
         Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment);
     }
 
     @Override
-    public <T> void onItemClick(T meal) {
-        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_mealDetailsFragment);
+    public void onMealClick(Meal meal) {
+        presenter.loadSelectedMeal(meal.getIdMeal());
     }
 }

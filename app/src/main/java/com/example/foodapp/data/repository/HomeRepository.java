@@ -19,6 +19,11 @@ public class HomeRepository {
         this.apiService = ApiClient.getClient().create(ApiService.class);
     }
 
+    public void fetchMealDetailsFromAPI(String mealId, ApiCallback callback) {
+        Call<MealResponse> call = apiService.getMealsById(mealId);
+        ApiClient.makeNetworkCall(call, callback);
+    }
+
     public void fetchRandomMealFromAPI(ApiCallback callback) {
         Call<MealResponse> call = apiService.getRandomMeal();
         ApiClient.makeNetworkCall(call, callback);
