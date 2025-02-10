@@ -20,6 +20,9 @@ public interface ApiService {
     @GET("random.php") // Endpoint for fetching a random meal
     Call<MealResponse> getRandomMeal();
 
+    @GET("lookup.php?") // Endpoint for fetching meal by mealId
+    Call<MealResponse> getMealsById(@Query("i") String mealId);
+
 
 }
 

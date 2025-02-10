@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MealDetailsFragment">
+    tools:context=".ui.meal.view.MealDetailsFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -65,11 +65,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <VideoView
+                <WebView
                     android:id="@+id/video"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginHorizontal="8dp"/>
+                    android:layout_height="200dp"/>
 
                 <TextView
                     android:id="@+id/tv_mealName"
@@ -137,32 +136,6 @@
                         />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ingredient"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/main_color"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_ingredient"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:text="@string/example_ingredient"
-                        android:textSize="14sp"
-                        android:textColor="@color/dark_blue"
-                        />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -192,6 +165,60 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_ingredients"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ingredient"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+                    <GridLayout
+                        android:id="@+id/grid_ingredients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="3"
+                        android:padding="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginHorizontal="4dp">
+                    </GridLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Measures"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/main_color"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_measures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:text="@string/example_ingredient"
+                        android:textSize="14sp"
+                        android:textColor="@color/dark_blue"
+                        />
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/btn_add_meal_favourite"
                     android:layout_width="match_parent"
@@ -199,9 +226,10 @@
                     android:backgroundTint="@color/main_color"
                     android:text="@string/add_favourite"
                     android:textSize="24sp"
-                    android:layout_marginTop="48dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"/>
 
             </LinearLayout>
 

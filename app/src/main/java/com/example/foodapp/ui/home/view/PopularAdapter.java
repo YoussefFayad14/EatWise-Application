@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.model.CountryMeal;
+import com.example.foodapp.data.model.Meal;
+import com.example.foodapp.ui.home.presenter.HomePresenter;
 
 import java.util.List;
 
 public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularViewHolder> {
 
     private Context context;
-    private List<CountryMeal> popularMealList;
+    private List<Meal> popularMealList;
     private onClickListener listener;
 
-    public PopularAdapter(Context context, List<CountryMeal> PopularMeals , onClickListener listener) {
+    public PopularAdapter(Context context, List<Meal> PopularMeals , onClickListener listener) {
         this.context = context;
         this.popularMealList = PopularMeals;
         this.listener = listener;
@@ -38,14 +38,14 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularV
 
     @Override
     public void onBindViewHolder(@NonNull PopularViewHolder holder, int position) {
-        CountryMeal popularMeal = popularMealList.get(position);
+        Meal popularMeal = popularMealList.get(position);
         holder.itemTitle.setText(popularMeal.getMealName());
         Glide.with(holder.itemView.getContext())
                 .load(popularMeal.getMealThumb())
                 .into(holder.itemImage);
 
         holder.itemView.setOnClickListener(view -> {
-            listener.onItemClick(popularMeal);
+            listener.onMealClick(popularMeal);
         });
     }
 
@@ -61,6 +61,7 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularV
         public PopularViewHolder(View itemView) {
             super(itemView);
             itemTitle = itemView.findViewById(R.id.itemTitle);
-            itemImage = itemView.findViewById(R.id.itemImage);        }
+            itemImage = itemView.findViewById(R.id.itemImage);
+        }
     }
 }
