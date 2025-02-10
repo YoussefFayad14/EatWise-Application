@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodapp.data.model.Meal;
+
 import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
@@ -32,9 +34,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
         Meal meal = mealList.get(position);
-        holder.mealName.setText(meal.getName());
-        holder.mealDescription.setText(meal.getDescription());
-        holder.mealImage.setImageResource(meal.getImageResId());
+        holder.mealName.setText(meal.getMealName());
+        holder.mealCountry.setText(meal.getArea());
+        //holder.mealImage.setImageResource(meal.getMealThumb());
 
         holder.removeButton.setOnClickListener(v -> {
             removeItem(position);
@@ -52,14 +54,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mealName, mealDescription;
+        TextView mealName, mealCountry;
         ImageView mealImage;
         Button removeButton, addToPlanButton;
 
         public FavoriteViewHolder(View itemView) {
             super(itemView);
             mealName = itemView.findViewById(R.id.mealName);
-            mealDescription = itemView.findViewById(R.id.mealCountry);
+            mealCountry = itemView.findViewById(R.id.mealCountry);
             mealImage = itemView.findViewById(R.id.mealImage);
             removeButton = itemView.findViewById(R.id.removeButton);
             addToPlanButton = itemView.findViewById(R.id.addToPlanButton);
@@ -71,6 +73,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         notifyItemRemoved(position);
     }
     private void addToPlan(Meal meal) {
-        Toast.makeText(context, meal.getName() + " added to weekly plan!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, meal.getMealName() + " added to weekly plan!", Toast.LENGTH_SHORT).show();
     }
 }

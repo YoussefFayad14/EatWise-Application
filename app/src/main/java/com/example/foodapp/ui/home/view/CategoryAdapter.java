@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.home.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,20 +7,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.foodapp.R;
+import com.example.foodapp.data.model.CategoryItem;
+
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context context;
-    private List<String> categoryList;
+    private List<CategoryItem> categoryList;
+    private onClickListener listener;
 
-    public CategoryAdapter(Context context, List<String> categories) {
+    public CategoryAdapter(Context context, List<CategoryItem> categories, onClickListener listener) {
         this.context = context;
         this.categoryList = categories;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,11 +36,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        String category = categoryList.get(position);
-        holder.itemTitle.setText(category);
-        holder.itemImage.setImageResource(R.drawable.ic_launcher_foreground);
+        CategoryItem category = categoryList.get(position);
+        holder.itemTitle.setText(category.getStrCategory());
+        Glide.with(holder.itemView.getContext())
+                .load(category.getStrCategoryThumb())
+                .into(holder.itemImage);
+
         holder.itemView.setOnClickListener(view -> {
-            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mealDetailsFragment);
+            listener.onSectionClick(category);
         });
     }
 

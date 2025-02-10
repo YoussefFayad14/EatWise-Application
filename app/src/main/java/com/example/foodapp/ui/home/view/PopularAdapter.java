@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.home.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,20 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.foodapp.R;
+import com.example.foodapp.data.model.CountryMeal;
+
 import java.util.List;
 
 public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularViewHolder> {
 
     private Context context;
-    private List<String> popularMealList;
+    private List<CountryMeal> popularMealList;
+    private onClickListener listener;
 
-    public PopularAdapter(Context context, List<String> PopularMeals) {
+    public PopularAdapter(Context context, List<CountryMeal> PopularMeals , onClickListener listener) {
         this.context = context;
         this.popularMealList = PopularMeals;
+        this.listener = listener;
 
     }
 
@@ -33,11 +38,14 @@ public class PopularAdapter extends RecyclerView.Adapter<PopularAdapter.PopularV
 
     @Override
     public void onBindViewHolder(@NonNull PopularViewHolder holder, int position) {
-        String popularMeal = popularMealList.get(position);
-        holder.itemTitle.setText(popularMeal);
-        holder.itemImage.setImageResource(R.drawable.ic_launcher_foreground);
+        CountryMeal popularMeal = popularMealList.get(position);
+        holder.itemTitle.setText(popularMeal.getMealName());
+        Glide.with(holder.itemView.getContext())
+                .load(popularMeal.getMealThumb())
+                .into(holder.itemImage);
+
         holder.itemView.setOnClickListener(view -> {
-            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_mealDetailsFragment);
+            listener.onItemClick(popularMeal);
         });
     }
 

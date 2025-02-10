@@ -1,27 +1,33 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.home.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodapp.R;
+import com.example.foodapp.data.model.Area;
+
 import java.util.List;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryViewHolder> {
 
     private Context context;
-    private List<String> countryList;
+    private List<Area> countryList;
+    private onClickListener listener;
 
 
-    public CountryAdapter(Context context, List<String> Countries) {
+    public CountryAdapter(Context context, List<Area> Countries, onClickListener listener) {
         this.context = context;
         this.countryList = Countries;
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,10 +39,11 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
 
     @Override
     public void onBindViewHolder(@NonNull CountryViewHolder holder, int position) {
-        String country = countryList.get(position);
-        holder.itemImage.setImageResource(R.drawable.ic_launcher_foreground);
+        Area country = countryList.get(position);
+        holder.itemTitle.setText(country.getName());
+
         holder.itemView.setOnClickListener(view -> {
-            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_searchFragment);
+            listener.onSectionClick(country);
         });
     }
 
@@ -46,9 +53,10 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
     }
 
     public static class CountryViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemImage;
+        TextView itemTitle;
         public CountryViewHolder(View itemView) {
             super(itemView);
-            itemImage = itemView.findViewById(R.id.itemImage);        }
+            itemTitle = itemView.findViewById(R.id.btnAreaTitle);
+        }
     }
 }

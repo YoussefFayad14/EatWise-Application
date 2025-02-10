@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.main;
 
 import android.os.Bundle;
 
@@ -13,6 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.foodapp.FavouritesFragment;
+import com.example.foodapp.ui.home.view.HomeFragment;
+import com.example.foodapp.MealPlanFragment;
+import com.example.foodapp.ProfileFragment;
+import com.example.foodapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainFragment extends Fragment {
