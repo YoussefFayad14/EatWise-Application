@@ -6,7 +6,7 @@ import com.example.foodapp.data.local.FavoriteMealDao;
 import java.util.List;
 
 public class FavoriteMealRepository {
-    private final FavoriteMealDao favoriteMealDao;
+    private FavoriteMealDao favoriteMealDao;
 
     public FavoriteMealRepository(FavoriteMealDao favoriteMealDao) {
         this.favoriteMealDao = favoriteMealDao;

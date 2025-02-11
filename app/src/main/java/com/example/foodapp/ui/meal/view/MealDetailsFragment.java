@@ -1,10 +1,6 @@
 package com.example.foodapp.ui.meal.view;
 
-import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +8,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -32,10 +25,7 @@ import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.meal.MealDetailsContract;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
-import com.example.foodapp.utils.CustomPopupSnackbar;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.foodapp.utils.PopupSnackbar;
 
 import java.util.List;
 
@@ -45,7 +35,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
     private WebView webView;
     private ImageButton backButton;
     private Button btnAddFavourite, btnRemoveFavourite;
-    private CustomPopupSnackbar popupSnackbar;
+    private PopupSnackbar popupSnackbar;
     private MealDetailsPresenter presenter;
     private Meal meal;
 
@@ -56,7 +46,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            meal = getArguments().getParcelable("meal");
+            meal = (Meal) getArguments().getParcelable("meal");
             presenter = new MealDetailsPresenter(this, meal, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
         }
     }
@@ -75,9 +65,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         backButton = view.findViewById(R.id.back_Button2);
         btnAddFavourite = view.findViewById(R.id.btn_add_meal_favourite);
         btnRemoveFavourite = view.findViewById(R.id.btn_remove_meal_favourite);
-        popupSnackbar = new CustomPopupSnackbar(requireContext());
-
-
+        popupSnackbar = new PopupSnackbar(requireContext());
 
         presenter.loadMealDetails();
 
