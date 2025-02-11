@@ -20,6 +20,7 @@ import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements onClickListener, HomeView {

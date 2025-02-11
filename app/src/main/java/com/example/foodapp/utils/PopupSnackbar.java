@@ -5,12 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -20,19 +18,19 @@ import androidx.core.content.ContextCompat;
 
 import com.example.foodapp.R;
 
-public class CustomPopupSnackbar extends Dialog {
+public class PopupSnackbar extends Dialog {
 
     private TextView messageTextView;
     private int displayDuration = 5000;
 
-    public CustomPopupSnackbar(@NonNull Context context) {
+    public PopupSnackbar(@NonNull Context context) {
         super(context);
         init();
     }
 
     private void init() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.custom_popup_snackbar);
+        setContentView(R.layout.popup_snackbar);
 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getWindow().setDimAmount(0f);
@@ -83,7 +81,7 @@ public class CustomPopupSnackbar extends Dialog {
             messageTextView.setText(message);
             show();
 
-            new Handler(Looper.getMainLooper()).postDelayed(CustomPopupSnackbar.this::dismiss, displayDuration);
+            new Handler(Looper.getMainLooper()).postDelayed(PopupSnackbar.this::dismiss, displayDuration);
         });
     }
 }

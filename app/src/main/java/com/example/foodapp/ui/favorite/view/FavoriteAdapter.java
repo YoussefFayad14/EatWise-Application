@@ -5,25 +5,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
+import com.example.foodapp.data.local.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Meal;
-
 import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
-
-    private List<Meal> mealList;
     private Context context;
+    private List<FavoriteMeal> favMealList;
+    private onClickListener listener;
 
-    public FavoriteAdapter(List<Meal> mealList, Context context) {
-        this.mealList = mealList;
+
+    public FavoriteAdapter(Context context,List<FavoriteMeal> FavMealList,onClickListener listener) {
         this.context = context;
+        this.favMealList = FavMealList;
+        this.listener = listener;
     }
 
     @Override
@@ -34,30 +37,37 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     @Override
     public void onBindViewHolder(FavoriteViewHolder holder, int position) {
-        Meal meal = mealList.get(position);
+        FavoriteMeal meal = favMealList.get(position);
         holder.mealName.setText(meal.getMealName());
-        holder.mealCountry.setText(meal.getArea());
-        //holder.mealImage.setImageResource(meal.getMealThumb());
+        holder.mealCountry.setText(meal.getMealArea());
+        Glide.with(holder.itemView.getContext())
+                .load(meal.getMealImage())
+                .into(holder.mealImage);
+
+        holder.itemView.setOnClickListener(v -> {
+            showMealDetails(meal);
+        });
 
         holder.removeButton.setOnClickListener(v -> {
-            removeItem(position);
+            removeItem(position, meal);
         });
 
         holder.addToPlanButton.setOnClickListener(v -> {
-            addToPlan(meal);
+           // addToPlan(meal);
         });
     }
 
     @Override
     public int getItemCount() {
-        return mealList.size();
+        return favMealList.size();
     }
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder {
 
         TextView mealName, mealCountry;
         ImageView mealImage;
-        Button removeButton, addToPlanButton;
+        Button addToPlanButton;
+        ImageButton removeButton;
 
         public FavoriteViewHolder(View itemView) {
             super(itemView);
@@ -68,12 +78,15 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             addToPlanButton = itemView.findViewById(R.id.addToPlanButton);
         }
     }
-
-    private void removeItem(int position) {
-        mealList.remove(position);
-        notifyItemRemoved(position);
+    private void showMealDetails(FavoriteMeal meal) {
+        listener.onMealClick(meal);
     }
-    private void addToPlan(Meal meal) {
-        Toast.makeText(context, meal.getMealName() + " added to weekly plan!", Toast.LENGTH_SHORT).show();
+    private void removeItem(int position, FavoriteMeal meal) {
+        favMealList.remove(position);
+        notifyItemRemoved(position);
+        listener.RemoveFromFavouritesClick(meal);
+    }
+    private void addToPlan(FavoriteMeal meal) {
+        listener.AddToPlanClick(meal);
     }
 }
