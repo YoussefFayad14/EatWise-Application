@@ -2,7 +2,7 @@ package com.example.foodapp.ui.home.presenter;
 
 import android.util.Log;
 
-import com.example.foodapp.data.model.CountryMapper;
+import com.example.foodapp.data.remote.model.CountryMapper;
 import com.example.foodapp.data.remote.ApiCallback;
 import com.example.foodapp.data.remote.IPApi.IpApiClient;
 import com.example.foodapp.data.remote.IPApi.IpApiResponse;

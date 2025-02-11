@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.favorite.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.data.model.Meal;
+import com.example.foodapp.R;
+import com.example.foodapp.data.remote.model.Meal;
 
 import java.util.List;
 

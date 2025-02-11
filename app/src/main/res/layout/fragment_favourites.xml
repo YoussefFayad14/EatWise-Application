@@ -5,7 +5,7 @@
     android:name="com.example.foodplanner.FavoriteFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FavouritesFragment">
+    tools:context=".ui.favorite.view.FavouritesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

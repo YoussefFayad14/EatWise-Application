@@ -1,7 +1,7 @@
 package com.example.foodapp.ui.home.view;
 
 
-import com.example.foodapp.data.model.Meal;
+import com.example.foodapp.data.remote.model.Meal;
 
 public interface onClickListener {
     <T> void onSectionClick(T item);

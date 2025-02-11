@@ -2,7 +2,7 @@ package com.example.foodapp.data.remote.MealApi;
 
 import java.util.List;
 
-import com.example.foodapp.data.model.CategoryItem;
+import com.example.foodapp.data.remote.model.CategoryItem;
 import com.google.gson.annotations.SerializedName;
 
 public class CategoriesResponse{

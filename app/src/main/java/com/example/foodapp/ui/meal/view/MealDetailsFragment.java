@@ -1,6 +1,10 @@
 package com.example.foodapp.ui.meal.view;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,31 +12,42 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.model.Ingredient;
-import com.example.foodapp.data.model.Meal;
+import com.example.foodapp.data.local.AppDatabase;
+import com.example.foodapp.data.local.FavoriteMeal;
+import com.example.foodapp.data.remote.model.Ingredient;
+import com.example.foodapp.data.remote.model.Meal;
+import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.meal.MealDetailsContract;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
+import com.example.foodapp.utils.CustomPopupSnackbar;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class MealDetailsFragment extends Fragment implements MealDetailsContract.View {
-    private TextView tvMealName, tvCategory, tvCountry, tvInstructions, tvIngredient, tvMeasures;
+    private TextView tvMealName, tvCategory, tvCountry, tvInstructions, tvMeasures;
     private GridLayout gridIngredients;
     private WebView webView;
     private ImageButton backButton;
-    private Button btnAddFavourite;
+    private Button btnAddFavourite, btnRemoveFavourite;
+    private CustomPopupSnackbar popupSnackbar;
     private MealDetailsPresenter presenter;
+    private Meal meal;
 
     public MealDetailsFragment() {}
 
@@ -41,8 +56,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            Meal meal = getArguments().getParcelable("meal");
-            presenter = new MealDetailsPresenter(this, meal);
+            meal = getArguments().getParcelable("meal");
+            presenter = new MealDetailsPresenter(this, meal, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
         }
     }
 
@@ -59,10 +74,42 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         webView = view.findViewById(R.id.video);
         backButton = view.findViewById(R.id.back_Button2);
         btnAddFavourite = view.findViewById(R.id.btn_add_meal_favourite);
+        btnRemoveFavourite = view.findViewById(R.id.btn_remove_meal_favourite);
+        popupSnackbar = new CustomPopupSnackbar(requireContext());
+
+
+
+        presenter.loadMealDetails();
 
         backButton.setOnClickListener(v -> presenter.onBackPressed());
 
-        presenter.loadMealDetails();
+        btnAddFavourite.setOnClickListener(v -> {
+            presenter.addToFavorites(new FavoriteMeal(
+                    meal.getIdMeal(),
+                    meal.getMealName(),
+                    meal.getCategory(),
+                    meal.getArea(),
+                    meal.getMealThumb(),
+                    meal.getIngredients(),
+                    meal.getMeasures(),
+                    meal.getInstructions(),
+                    meal.getYoutubeLink()
+            ));
+        });
+
+        btnRemoveFavourite.setOnClickListener(v -> {
+            presenter.removeFromFavorites(new FavoriteMeal(
+                    meal.getIdMeal(),
+                    meal.getMealName(),
+                    meal.getCategory(),
+                    meal.getArea(),
+                    meal.getMealThumb(),
+                    meal.getIngredients(),
+                    meal.getMeasures(),
+                    meal.getInstructions(),
+                    meal.getYoutubeLink()
+            ));
+        });
 
         return view;
     }
@@ -83,7 +130,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
                 gridIngredients.addView(ingredientView);
             }
         }
-
     }
 
     @Override
@@ -121,8 +167,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
     }
 
     @Override
-    public void showError(String message) {
-        tvMealName.setText(message);
+    public void showMessage(String message, boolean isError) {
+        popupSnackbar.showMessage(message, isError);
     }
 
     @Override

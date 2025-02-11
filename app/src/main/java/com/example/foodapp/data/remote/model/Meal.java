@@ -1,4 +1,4 @@
-package com.example.foodapp.data.model;
+package com.example.foodapp.data.remote.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
