@@ -1,6 +1,6 @@
 package com.example.foodapp.data.remote.MealApi;
 
-import com.example.foodapp.data.model.Meal;
+import com.example.foodapp.data.remote.model.Meal;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.foodapp;
+package com.example.foodapp.ui.favorite.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.data.model.Meal;
+import com.example.foodapp.R;
+import com.example.foodapp.data.remote.model.Meal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavouritesFragment extends Fragment {

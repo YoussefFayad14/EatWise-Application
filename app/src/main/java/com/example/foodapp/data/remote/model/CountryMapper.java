@@ -1,4 +1,4 @@
-package com.example.foodapp.data.model;
+package com.example.foodapp.data.remote.model;
 
 import java.util.HashMap;
 import java.util.Map;

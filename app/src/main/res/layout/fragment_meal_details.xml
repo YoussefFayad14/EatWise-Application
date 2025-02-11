@@ -218,18 +218,33 @@
                         android:textColor="@color/dark_blue"
                         />
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_add_meal_favourite"
+                
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/main_color"
-                    android:text="@string/add_favourite"
-                    android:textSize="24sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_add_meal_favourite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/main_color"
+                        android:text="@string/add_to_favorites"
+                        android:textStyle="bold"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"/>
+                    <Button
+                        android:id="@+id/btn_remove_meal_favourite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/main_color"
+                        android:text="@string/remove_from_favorites"
+                        android:textStyle="bold"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"/>
+                </LinearLayout>
 
             </LinearLayout>
 

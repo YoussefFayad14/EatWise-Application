@@ -1,6 +1,6 @@
 package com.example.foodapp.data.remote.IPApi;
 
-import com.example.foodapp.data.model.CountryMapper;
+import com.example.foodapp.data.remote.model.CountryMapper;
 import com.example.foodapp.data.remote.ApiCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
