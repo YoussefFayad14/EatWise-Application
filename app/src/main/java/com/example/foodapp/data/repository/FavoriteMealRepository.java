@@ -1,8 +1,8 @@
 package com.example.foodapp.data.repository;
 
 import androidx.lifecycle.LiveData;
-import com.example.foodapp.data.local.FavoriteMeal;
-import com.example.foodapp.data.local.FavoriteMealDao;
+import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
+import com.example.foodapp.data.local.favoritemealdb.FavoriteMealDao;
 import java.util.List;
 
 public class FavoriteMealRepository {

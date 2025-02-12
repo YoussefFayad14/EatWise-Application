@@ -1,7 +1,7 @@
 package com.example.foodapp.ui.favorite.presenter;
 
 import androidx.lifecycle.LiveData;
-import com.example.foodapp.data.local.FavoriteMeal;
+import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.favorite.view.FavoriteView;

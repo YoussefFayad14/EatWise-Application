@@ -1,6 +1,6 @@
 package com.example.foodapp.ui.favorite.view;
 
-import com.example.foodapp.data.local.FavoriteMeal;
+import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
 
 public interface onClickListener {
     void onMealClick(FavoriteMeal meal);
