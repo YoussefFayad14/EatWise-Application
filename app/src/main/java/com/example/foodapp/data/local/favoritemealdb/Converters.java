@@ -1,4 +1,4 @@
-package com.example.foodapp.data.local;
+package com.example.foodapp.data.local.favoritemealdb;
 
 import androidx.room.TypeConverter;
 import com.google.gson.Gson;

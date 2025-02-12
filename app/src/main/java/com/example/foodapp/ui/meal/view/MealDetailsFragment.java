@@ -18,8 +18,8 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.local.AppDatabase;
-import com.example.foodapp.data.local.FavoriteMeal;
+import com.example.foodapp.data.local.favoritemealdb.AppDatabase;
+import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;

@@ -2,7 +2,7 @@ package com.example.foodapp.ui.favorite.view;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.foodapp.data.local.FavoriteMeal;
+import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
 import java.util.List;
 
 public interface FavoriteView {

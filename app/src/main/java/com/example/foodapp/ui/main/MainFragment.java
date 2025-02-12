@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.home.view.HomeFragment;
-import com.example.foodapp.MealPlanFragment;
+import com.example.foodapp.ui.weekplan.view.WeekPlanFragment;
 import com.example.foodapp.ProfileFragment;
 import com.example.foodapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -55,7 +55,7 @@ public class MainFragment extends Fragment {
                     replaceFragment(new ProfileFragment());
                     return true;
                 case R.id.calendar:
-                    replaceFragment(new MealPlanFragment());
+                    replaceFragment(new WeekPlanFragment());
                     return true;
                 default:
                     return false;
