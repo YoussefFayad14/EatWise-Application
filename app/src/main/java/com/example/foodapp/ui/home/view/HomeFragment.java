@@ -18,6 +18,7 @@ import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
+import com.example.foodapp.ui.PopupSnackbar;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
 
 import java.io.Serializable;
@@ -102,6 +103,11 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
         recyclerView4.setAdapter(new IngredientAdapter(getContext(), ingredients, this));
+    }
+
+    @Override
+    public void showAlert(String message, boolean flag) {
+        new PopupSnackbar(getContext()).showMessage(message,flag);
     }
 
     @Override
