@@ -1,7 +1,7 @@
 package com.example.foodapp.data.repository;
 
-import com.example.foodapp.data.local.weekplandb.MealPlan;
-import com.example.foodapp.data.local.weekplandb.MealPlanDao;
+import com.example.foodapp.data.local.model.MealPlan;
+import com.example.foodapp.data.local.MealPlanDao;
 
 import java.util.List;
 

@@ -18,14 +18,14 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.local.favoritemealdb.AppDatabase;
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
+import com.example.foodapp.data.local.AppDatabase;
+import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.meal.MealDetailsContract;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
-import com.example.foodapp.utils.PopupSnackbar;
+import com.example.foodapp.ui.PopupSnackbar;
 
 import java.util.List;
 

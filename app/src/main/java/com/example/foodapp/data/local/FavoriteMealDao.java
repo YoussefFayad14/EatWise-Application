@@ -1,22 +1,27 @@
-package com.example.foodapp.data.local.favoritemealdb;
+package com.example.foodapp.data.local;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.example.foodapp.data.local.model.FavoriteMeal;
+
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Completable;
 
 @Dao
 public interface FavoriteMealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(FavoriteMeal meal);
+    Completable insert(FavoriteMeal meal);
     @Delete
-    void delete(FavoriteMeal meal);
+    Completable delete(FavoriteMeal meal);
     @Query("SELECT * FROM favorite_meals")
-    LiveData<List<FavoriteMeal>> getAllFavoriteMeals();
+    Observable<List<FavoriteMeal>> getAllFavoriteMeals();
 
     @Query("SELECT * FROM favorite_meals WHERE mealId = :mealId LIMIT 1")
-    LiveData<FavoriteMeal> getMealById(String mealId);
+    Observable<FavoriteMeal> getMealById(String mealId);
 }

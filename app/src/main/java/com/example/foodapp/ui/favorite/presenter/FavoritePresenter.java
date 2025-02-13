@@ -1,11 +1,16 @@
 package com.example.foodapp.ui.favorite.presenter;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.LiveData;
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
+import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.favorite.view.FavoriteView;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavoritePresenter {
     private FavoriteView view;
@@ -14,27 +19,28 @@ public class FavoritePresenter {
         this.view = view;
         this.repository = repository;
     }
+    public void addToFavorites(FavoriteMeal meal) {
+        repository.insert(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
 
-    public LiveData<List<FavoriteMeal>> getFavoriteProducts() {
-        return repository.getAllFavoriteMeals();
+    @SuppressLint("CheckResult")
+    public void getFavoriteProducts() {
+        repository.getAllFavoriteMeals()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(list -> view.showFavoriteMeals(list));
     }
     public void removeFromFavorites(FavoriteMeal meal) {
-        repository.delete(meal);
+        repository.delete(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
-    public Meal fromFavoriteMeal(FavoriteMeal favoriteMeal) {
-        Meal meal = new Meal();
-        meal.setIdMeal(favoriteMeal.getMealId());
-        meal.setMealName(favoriteMeal.getMealName());
-        meal.setCategory(favoriteMeal.getMealCategory());
-        meal.setArea(favoriteMeal.getMealArea());
-        meal.setMealThumb(favoriteMeal.getMealImage());
-        meal.setInstructions(favoriteMeal.getInstructions());
-        meal.setYoutubeLink(favoriteMeal.getYoutubeLink());
-        meal.getIngredients().addAll(favoriteMeal.getIngredients());
-        meal.getMeasures().addAll(favoriteMeal.getMeasures());
-        return meal;
-    }
+
 
 
 }

@@ -1,32 +1,37 @@
 package com.example.foodapp.ui.weekplan.view;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import com.example.foodapp.R;
-import com.example.foodapp.data.local.favoritemealdb.AppDatabase;
-import com.example.foodapp.data.local.weekplandb.CalendarDay;
-import com.example.foodapp.data.local.weekplandb.MealPlan;
-import com.example.foodapp.data.local.weekplandb.MealPlanDao;
-import com.example.foodapp.data.local.weekplandb.MealPlanDatabase;
+import com.example.foodapp.data.local.AppDatabase;
+import com.example.foodapp.data.local.model.CalendarDay;
+import com.example.foodapp.data.local.model.MealPlan;
+import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
+import com.example.foodapp.ui.PopupSnackbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class WeekPlanFragment extends Fragment implements OnMealClickListener,WeekPlanView{
+public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnMealClickListener,WeekPlanView{
     private RecyclerView recyclerViewCalendar, recyclerViewBreakfast, recyclerViewLunch, recyclerViewDinner;
     private TextView dayNumMonth;
     private ImageButton btnAddNewMeal;
@@ -34,7 +39,6 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
     private CalendarAdapter calendarAdapter;
     private MealPlanAdapter breakfastAdapter, lunchAdapter, dinnerAdapter;
     private List<CalendarDay> weekDays = new ArrayList<>();
-    private List<MealPlan> mealPlans = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
 
         presenter = new WeekPlanPresenter(
                 this,
-                new MealPlanRepository(MealPlanDatabase.getInstance(getContext()).mealPlanDao()),
+                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
                 new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
         );
 
@@ -59,7 +63,7 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
         btnAddNewMeal = view.findViewById(R.id.btn_addNewMeal);
 
 
-        calendarAdapter = new CalendarAdapter(getContext(),weekDays,dayNumMonth);
+        calendarAdapter = new CalendarAdapter(getContext(),weekDays,dayNumMonth,this);
         breakfastAdapter = new MealPlanAdapter(getContext(),this);
         lunchAdapter = new MealPlanAdapter(getContext(),this);
         dinnerAdapter = new MealPlanAdapter(getContext(),this);
@@ -77,6 +81,7 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
 
 
         presenter.loadCurrentWeek();
+        presenter.loadMealsForDay(new SimpleDateFormat("EEEE", Locale.getDefault()).format(Calendar.getInstance().getTime()));
         btnAddNewMeal.setOnClickListener(v -> addNewMeal());
 
         return view;
@@ -87,6 +92,7 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
         weekDays.clear();
         weekDays.addAll(days);
         calendarAdapter.setDays(weekDays);
+        dayNumMonth.setText(new SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault()).format(Calendar.getInstance().getTime()));
     }
 
     @Override
@@ -109,7 +115,7 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        new PopupSnackbar(requireContext()).showMessage(message, true);
     }
 
     private void addNewMeal(){
@@ -129,7 +135,18 @@ public class WeekPlanFragment extends Fragment implements OnMealClickListener,We
 
     @Override
     public void onMealClick(MealPlan mealPlan) {
-        presenter.showMealDetails(mealPlan);
+        presenter.getMealDetails(mealPlan,this);
+    }
+    @Override
+    public void onMealLoaded(Meal meal) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("meal", meal);
+        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_mealDetailsFragment, bundle);
+    }
+
+    @Override
+    public void onDayClick(String day) {
+        presenter.loadMealsForDay(day);
     }
 
 

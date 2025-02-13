@@ -1,6 +1,6 @@
 package com.example.foodapp.ui.meal;
 
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
+import com.example.foodapp.data.local.model.FavoriteMeal;
 
 import java.util.List;
 public interface MealDetailsContract {

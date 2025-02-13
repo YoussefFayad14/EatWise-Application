@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.local.weekplandb.MealPlan;
+import com.example.foodapp.data.local.model.MealPlan;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +43,21 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         MealPlan mealPlan = meals.get(position);
-        holder.bind(mealPlan);
+        holder.mealName.setText(mealPlan.getMealName());
+        holder.mealCountry.setText(mealPlan.getMealArea());
+
+        Glide.with(holder.itemView.getContext())
+                .load(mealPlan.getMealImage())
+                .placeholder(R.drawable.baseline_visibility_off_24)
+                .into(holder.mealImage);
+
+        holder.addToPlanButton.setOnClickListener(v -> {
+            listener.onMealRemove(mealPlan);
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            listener.onMealClick(mealPlan);
+        });
     }
 
     @Override
@@ -64,25 +78,9 @@ public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealVi
             mealImage = itemView.findViewById(R.id.mealImage);
             removeButton = itemView.findViewById(R.id.removeButton);
             addToPlanButton = itemView.findViewById(R.id.addToPlanButton);
+            removeButton.setVisibility(View.GONE);
+            addToPlanButton.setText("Remove");
 
-            addToPlanButton.setVisibility(View.GONE);
-
-        }
-
-        void bind(MealPlan mealPlan) {
-            mealName.setText(mealPlan.getMealName());
-            mealCountry.setText(mealPlan.getMealArea());
-
-            Glide.with(itemView.getContext())
-                    .load(mealPlan.getMealImage())
-                    .placeholder(R.drawable.baseline_visibility_off_24)
-                    .into(mealImage);
-
-            removeButton.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onMealRemove(mealPlan);
-                }
-            });
         }
     }
 }

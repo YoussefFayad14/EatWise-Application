@@ -1,4 +1,4 @@
-package com.example.foodapp.data.local.weekplandb;
+package com.example.foodapp.data.local.model;
 
 
 public class CalendarDay {
