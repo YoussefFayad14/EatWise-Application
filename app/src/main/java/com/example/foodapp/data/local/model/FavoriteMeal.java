@@ -1,9 +1,12 @@
-package com.example.foodapp.data.local.favoritemealdb;
+package com.example.foodapp.data.local.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.example.foodapp.utils.Converters;
+
 import java.util.List;
 
 @Entity(tableName = "favorite_meals")

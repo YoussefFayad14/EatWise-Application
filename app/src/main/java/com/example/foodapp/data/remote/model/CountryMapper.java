@@ -46,14 +46,6 @@ public final class CountryMapper {
         return countryMapping.getOrDefault(country, "Unknown");
     }
 
-    public static String getOriginalCountry(String mappedCountry) {
-        for (Map.Entry<String, String> entry : countryMapping.entrySet()) {
-            if (entry.getValue().equals(mappedCountry)) {
-                return entry.getKey();
-            }
-        }
-        return "Unknown";
-    }
     public static List<Area> getCountriesByMappedValues(List<Area> mappedCountries) {
         List<Area> matchingCountries = new ArrayList<>();
 

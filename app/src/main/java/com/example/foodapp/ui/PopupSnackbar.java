@@ -1,4 +1,4 @@
-package com.example.foodapp.utils;
+package com.example.foodapp.ui;
 
 import android.app.Dialog;
 import android.content.Context;

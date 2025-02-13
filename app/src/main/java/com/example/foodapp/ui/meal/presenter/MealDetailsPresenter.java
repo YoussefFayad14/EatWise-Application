@@ -1,9 +1,14 @@
 package com.example.foodapp.ui.meal.presenter;
 
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
+import android.annotation.SuppressLint;
+
+import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.meal.MealDetailsContract;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealDetailsPresenter implements MealDetailsContract.Presenter {
     private final MealDetailsContract.View view;
@@ -42,20 +47,22 @@ public class MealDetailsPresenter implements MealDetailsContract.Presenter {
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void addToFavorites(FavoriteMeal meal) {
-        new Thread(() -> {
-            favoriteMealRepository.insert(meal);
-            view.showMessage("Meal added to favorites", false);
-        }).start();
+        favoriteMealRepository.insert(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.showMessage("Meal added to favorites", false));
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void removeFromFavorites(FavoriteMeal meal) {
-        new Thread(() -> {
-            favoriteMealRepository.delete(meal);
-            view.showMessage("Meal removed from favorites", false);
-        }).start();
+        favoriteMealRepository.delete(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.showMessage("Meal removed from favorites", false));
     }
 
     @Override

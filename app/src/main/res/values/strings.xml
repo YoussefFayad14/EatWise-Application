@@ -61,6 +61,19 @@
     <string name="remove_from_favorites">Remove from Favorites</string>
     <string name="add_to_favorites">Add to Favorites</string>
     <string name="week_plan">Week Plan</string>
+    <string name="add_meal_to_plan">Add Meal to Plan</string>
+    <string name="select_day">Select Day</string>
+    <string name="select_meal_type">Select Meal Type</string>
+    <string-array name="week_days">
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
+
 
 
 </resources>

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
-import com.example.foodapp.data.local.weekplandb.CalendarDay;
+import com.example.foodapp.data.local.model.CalendarDay;
 
 import java.util.List;
 
@@ -23,11 +23,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     private int selectedPosition = -1;
     private Context context;
     private TextView selectedDateTextView;
+    private OnDayClickListener listener;
 
-    public CalendarAdapter(Context context, List<CalendarDay> days,TextView selectedDateTextView) {
+    public CalendarAdapter(Context context, List<CalendarDay> days,TextView selectedDateTextView,OnDayClickListener listener) {
         this.context = context;
         this.daysList = days;
         this.selectedDateTextView = selectedDateTextView;
+        this.listener = listener;
     }
 
     public void setDays(List<CalendarDay> days) {
@@ -80,10 +82,24 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
             notifyItemChanged(selectedPosition);
 
             if (selectedDateTextView != null) {
-                selectedDateTextView.setText(day.getDayName() + ", " + day.getDayNum() + " " + day.getMonthName());
+                selectedDateTextView.setText(convertShortToFullDay(day.getDayName()) + ", " + day.getDayNum() + " " + day.getMonthName());
             }
+            listener.onDayClick(convertShortToFullDay(day.getDayName()));
         });
     }
+    private String convertShortToFullDay(String shortDay) {
+        switch (shortDay.toLowerCase()) {
+            case "sun": return "Sunday";
+            case "mon": return "Monday";
+            case "tue": return "Tuesday";
+            case "wed": return "Wednesday";
+            case "thu": return "Thursday";
+            case "fri": return "Friday";
+            case "sat": return "Saturday";
+            default: return shortDay;
+        }
+    }
+
 
 
     @Override

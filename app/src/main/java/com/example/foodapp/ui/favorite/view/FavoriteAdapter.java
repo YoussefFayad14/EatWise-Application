@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
+import com.example.foodapp.data.local.model.FavoriteMeal;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         });
 
         holder.addToPlanButton.setOnClickListener(v -> {
-           // addToPlan(meal);
+           addToPlan(meal);
         });
     }
 

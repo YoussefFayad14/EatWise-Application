@@ -1,9 +1,12 @@
-package com.example.foodapp.data.local.weekplandb;
+package com.example.foodapp.data.local;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+
+import com.example.foodapp.data.local.model.MealPlan;
+
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;

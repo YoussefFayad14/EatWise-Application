@@ -1,13 +1,21 @@
 package com.example.foodapp.ui.weekplan.presenter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
-import com.example.foodapp.data.local.weekplandb.CalendarDay;
-import com.example.foodapp.data.local.weekplandb.MealPlan;
-import com.example.foodapp.data.local.weekplandb.MealPlanDao;
+import androidx.lifecycle.LiveData;
+
+import com.example.foodapp.data.local.model.CalendarDay;
+import com.example.foodapp.data.local.model.FavoriteMeal;
+import com.example.foodapp.data.local.model.MealPlan;
+import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.ui.favorite.presenter.FavoritePresenter;
+import com.example.foodapp.ui.weekplan.view.OnMealClickListener;
 import com.example.foodapp.ui.weekplan.view.WeekPlanView;
+import com.example.foodapp.utils.Converters;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,10 +57,7 @@ public class WeekPlanPresenter {
         mealPlanRepository.addMeal(mealPlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> view.showMessage("Meal added successfully!"),
-                        throwable -> view.showMessage("Error adding meal: " + throwable.getMessage())
-                );
+                .subscribe();
     }
 
     @SuppressLint("CheckResult")
@@ -60,10 +65,7 @@ public class WeekPlanPresenter {
         mealPlanRepository.removeMeal(mealPlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> view.showMessage("Meal removed from plan!"),
-                        throwable -> view.showMessage("Error removing meal: " + throwable.getMessage())
-                );
+                .subscribe();
     }
 
     @SuppressLint("CheckResult")
@@ -72,12 +74,18 @@ public class WeekPlanPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        mealPlans -> view.showMealPlan(mealPlans),
+                        mealPlans -> {
+                            view.showMealPlan(mealPlans);
+                        },
                         throwable -> view.showMessage("Error loading meals: " + throwable.getMessage())
                 );
     }
 
-    public void showMealDetails(MealPlan mealPlan) {
-        String mealId = String.valueOf(mealPlan.getMealId());
+    @SuppressLint("CheckResult")
+    public void getMealDetails(MealPlan mealPlan, OnMealClickListener listener) {
+        favoriteMealRepository.getMealById(mealPlan.getMealId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(meal -> listener.onMealLoaded(new Converters().fromFavoriteMeal(meal)));
     }
 }

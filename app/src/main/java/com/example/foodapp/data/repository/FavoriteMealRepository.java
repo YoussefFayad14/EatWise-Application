@@ -1,9 +1,11 @@
 package com.example.foodapp.data.repository;
 
-import androidx.lifecycle.LiveData;
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMeal;
-import com.example.foodapp.data.local.favoritemealdb.FavoriteMealDao;
+import com.example.foodapp.data.local.model.FavoriteMeal;
+import com.example.foodapp.data.local.FavoriteMealDao;
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 
 public class FavoriteMealRepository {
     private FavoriteMealDao favoriteMealDao;
@@ -12,18 +14,18 @@ public class FavoriteMealRepository {
         this.favoriteMealDao = favoriteMealDao;
     }
 
-    public void insert(FavoriteMeal meal) {
-        new Thread(() -> favoriteMealDao.insert(meal)).start();
+    public Completable insert(FavoriteMeal meal) {
+        return favoriteMealDao.insert(meal);
     }
 
-    public void delete(FavoriteMeal meal) {
-        new Thread(() -> favoriteMealDao.delete(meal)).start();
+    public Completable delete(FavoriteMeal meal) {
+        return favoriteMealDao.delete(meal);
     }
 
-    public LiveData<List<FavoriteMeal>> getAllFavoriteMeals() {
+    public Observable<List<FavoriteMeal>> getAllFavoriteMeals() {
         return favoriteMealDao.getAllFavoriteMeals();
     }
-    public LiveData<FavoriteMeal> getMealById(String mealId) {
+    public Observable<FavoriteMeal> getMealById(String mealId) {
         return favoriteMealDao.getMealById(mealId);
     }
 }

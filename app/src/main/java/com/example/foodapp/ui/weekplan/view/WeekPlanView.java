@@ -1,7 +1,7 @@
 package com.example.foodapp.ui.weekplan.view;
 
-import com.example.foodapp.data.local.weekplandb.CalendarDay;
-import com.example.foodapp.data.local.weekplandb.MealPlan;
+import com.example.foodapp.data.local.model.CalendarDay;
+import com.example.foodapp.data.local.model.MealPlan;
 
 import java.util.List;
 
