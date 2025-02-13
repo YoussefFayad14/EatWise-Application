@@ -14,4 +14,5 @@ public interface HomeView {
     void showIngredients(List<Ingredient> ingredients);
     void showRandomMeal(Meal meal);
     void showMealDetails(Meal meal);
+    void showAlert(String message,boolean flag);
 }

@@ -1,6 +1,5 @@
 package com.example.foodapp.data.repository;
 
-import com.example.foodapp.data.remote.ApiCallback;
 import com.example.foodapp.data.remote.MealApi.ApiClient;
 import com.example.foodapp.data.remote.MealApi.ApiService;
 import com.example.foodapp.data.remote.MealApi.AreasResponse;
@@ -9,7 +8,8 @@ import com.example.foodapp.data.remote.MealApi.IngredientResponse;
 import com.example.foodapp.data.remote.MealApi.MealResponse;
 import com.example.foodapp.data.remote.MealApi.MealsCountryResponse;
 
-import retrofit2.Call;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public class HomeRepository {
 
@@ -19,34 +19,28 @@ public class HomeRepository {
         this.apiService = ApiClient.getClient().create(ApiService.class);
     }
 
-    public void fetchMealDetailsFromAPI(String mealId, ApiCallback callback) {
-        Call<MealResponse> call = apiService.getMealsById(mealId);
-        ApiClient.makeNetworkCall(call, callback);
+    public Single<MealResponse> fetchMealDetailsFromAPI(String mealId) {
+        return apiService.getMealsById(mealId);
     }
 
-    public void fetchRandomMealFromAPI(ApiCallback callback) {
-        Call<MealResponse> call = apiService.getRandomMeal();
-        ApiClient.makeNetworkCall(call, callback);
+    public Single<MealResponse> fetchRandomMealFromAPI() {
+        return apiService.getRandomMeal();
     }
 
-    public void fetchPopularMealsFromAPI(String country, ApiCallback callback) {
-        Call<MealsCountryResponse> call = apiService.getMealsByArea(country);
-        ApiClient.makeNetworkCall(call, callback);
+    public Observable<MealsCountryResponse> fetchPopularMealsFromAPI(String country) {
+        return apiService.getMealsByArea(country);
     }
 
-    public void fetchCategoriesFromAPI(ApiCallback callback) {
-        Call<CategoriesResponse> call = apiService.getCategories();
-        ApiClient.makeNetworkCall(call, callback);
+    public Observable<CategoriesResponse> fetchCategoriesFromAPI() {
+        return apiService.getCategories();
     }
 
-    public void fetchCountriesFromAPI(ApiCallback callback) {
-        Call<AreasResponse> call = apiService.getAreas();
-        ApiClient.makeNetworkCall(call, callback);
+    public Observable<AreasResponse> fetchCountriesFromAPI() {
+        return apiService.getAreas();
     }
 
-    public void fetchIngredientsFromAPI(ApiCallback callback) {
-        Call<IngredientResponse> call = apiService.getIngredients();
-        ApiClient.makeNetworkCall(call, callback);
+    public Observable<IngredientResponse> fetchIngredientsFromAPI() {
+        return apiService.getIngredients();
     }
 
 }

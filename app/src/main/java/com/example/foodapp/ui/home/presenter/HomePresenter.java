@@ -1,21 +1,18 @@
 package com.example.foodapp.ui.home.presenter;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.foodapp.data.remote.model.CountryMapper;
-import com.example.foodapp.data.remote.ApiCallback;
 import com.example.foodapp.data.remote.IPApi.IpApiClient;
-import com.example.foodapp.data.remote.IPApi.IpApiResponse;
-import com.example.foodapp.data.remote.MealApi.AreasResponse;
-import com.example.foodapp.data.remote.MealApi.CategoriesResponse;
-import com.example.foodapp.data.remote.MealApi.IngredientResponse;
-import com.example.foodapp.data.remote.MealApi.MealResponse;
-import com.example.foodapp.data.remote.MealApi.MealsCountryResponse;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.home.view.HomeView;
 
 import java.util.Collections;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenter {
     private final HomeView view;
@@ -27,115 +24,114 @@ public class HomePresenter {
         this.homeRepository = homeRepository;
         this.locationRepository = locationRepository;
     }
+    @SuppressLint("CheckResult")
     public void loadSelectedMeal(String mealId) {
-        homeRepository.fetchMealDetailsFromAPI(mealId,new ApiCallback<MealResponse>(){
-            @Override
-            public void onSuccess(MealResponse response) {
-                view.showMealDetails(response.getMeals().get(0));
-            }
-            @Override
-            public void onFailure(String errorMessage) {
-                view.showMealDetails(null);
-                Log.e("HomePresenter", "Error fetching meal details: " + errorMessage);
-            }
-        });
-    }
-    public void loadRandomMeal() {
-        homeRepository.fetchRandomMealFromAPI(new ApiCallback<MealResponse>() {
-            @Override
-            public void onSuccess(MealResponse response) {
-                if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()) {
-                    view.showRandomMeal(response.getMeals().get(0));
-                } else {
-                    view.showRandomMeal(null);
-                }
-            }
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("HomePresenter", "Error fetching random meal: " + errorMessage);
-            }
-        });
-    }
-
-    public void loadPopularMeals() {
-        locationRepository.fetchLocationFromAPI(new ApiCallback<IpApiResponse>() {
-            @Override
-            public void onSuccess(IpApiResponse result) {
-                String country = IpApiClient.formatCountryForMealDB(result.getCountry());
-                homeRepository.fetchPopularMealsFromAPI(country, new ApiCallback<MealsCountryResponse>() {
-                    @Override
-                    public void onSuccess(MealsCountryResponse response) {
-                        if (response != null && response.getMeals() != null) {
-                            view.showPopularMeals(response.getMeals(),country);
-                        } else {
-                            view.showPopularMeals(Collections.emptyList(),"empty");
+        homeRepository.fetchMealDetailsFromAPI(mealId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        response -> view.showMealDetails(response.getMeals().get(0)),
+                        throwable -> {
+                            view.showMealDetails(null);
+                            view.showAlert("Error fetching meal details",true);
                         }
-                    }
-                    @Override
-                    public void onFailure(String errorMessage) {
-                        Log.e("HomePresenter", "Error fetching popular meals: " + errorMessage);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("HomePresenter", "Error fetching location: " + errorMessage);
-            }
-        });
+                );
+    }
+    @SuppressLint("CheckResult")
+    public void loadRandomMeal() {
+        homeRepository.fetchRandomMealFromAPI()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        response -> {
+                            if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()) {
+                                view.showRandomMeal(response.getMeals().get(0));
+                            } else {
+                                view.showRandomMeal(null);
+                            }
+                        },
+                        throwable -> view.showAlert("Error fetching random meal: ",true)
+                );
     }
 
+    @SuppressLint("CheckResult")
+    public void loadPopularMeals() {
+        var ref = new Object() {
+            String country = "";
+        };
+        locationRepository.fetchLocationFromAPI()
+                .flatMapObservable(ipApiResponse -> {
+                    ref.country = CountryMapper.getMappedCountry(ipApiResponse.getCountry());
+                    return homeRepository.fetchPopularMealsFromAPI(ref.country);
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        mealsCountryResponse -> {
+                            if (mealsCountryResponse != null && mealsCountryResponse.getMeals() != null) {
+                                view.showPopularMeals(mealsCountryResponse.getMeals(), ref.country);
+                            } else {
+                                view.showPopularMeals(Collections.emptyList(), "");
+                            }
+                        },
+                        throwable -> {
+                            view.showAlert("Error fetching data",true);
+                            view.showPopularMeals(Collections.emptyList(), "");
+                        }
+                );
+
+    }
+
+
+    @SuppressLint("CheckResult")
     public void loadCountries() {
-        homeRepository.fetchCountriesFromAPI(new ApiCallback<AreasResponse>() {
-            @Override
-            public void onSuccess(AreasResponse response) {
-                if (response != null && response.getAreas() != null) {
-                    view.showCountries(CountryMapper.getCountriesByMappedValues(response.getAreas()));
-                } else {
-                    view.showCountries(Collections.emptyList());
-                }
-            }
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("HomePresenter", "Error fetching countries: " + errorMessage);
-            }
-        });
+        homeRepository.fetchCountriesFromAPI()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        response -> {
+                            if (response != null && response.getAreas() != null) {
+                                view.showCountries(CountryMapper.getCountriesByMappedValues(response.getAreas()));
+                            } else {
+                                view.showCountries(Collections.emptyList());
+                            }
+                        },
+                        throwable -> view.showAlert("Error fetching countries",true)
+                );
     }
 
+    @SuppressLint("CheckResult")
     public void loadCategories() {
-        homeRepository.fetchCategoriesFromAPI(new ApiCallback<CategoriesResponse>() {
-            @Override
-            public void onSuccess(CategoriesResponse response) {
-                if (response != null && response.getCategories() != null) {
-                    view.showCategories(response.getCategories());
-                } else {
-                    view.showCategories(Collections.emptyList());
-                }
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("HomePresenter", "Error fetching categories: " + errorMessage);
-            }
-        });
+        homeRepository.fetchCategoriesFromAPI()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        response -> {
+                            if (response != null && response.getCategories() != null) {
+                                view.showCategories(response.getCategories());
+                            } else {
+                                view.showCategories(Collections.emptyList());
+                                }
+                        },
+                        throwable -> view.showAlert("Error fetching categories",true)
+                );
     }
 
+    @SuppressLint("CheckResult")
     public void loadIngredients() {
-        homeRepository.fetchIngredientsFromAPI(new ApiCallback<IngredientResponse>() {
-            @Override
-            public void onSuccess(IngredientResponse result) {
-                if (result != null && result.getIngredients() != null) {
-                    view.showIngredients(result.getIngredients());
-                } else {
-                    view.showIngredients(Collections.emptyList());
-                }
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                Log.e("HomePresenter", "Error fetching ingredients: " + errorMessage);
-            }
-        });
+        homeRepository.fetchIngredientsFromAPI()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        response -> {
+                            if (response != null && response.getIngredients() != null) {
+                                view.showIngredients(response.getIngredients());
+                            } else {
+                                view.showIngredients(Collections.emptyList());
+                            }
+                        },
+                        throwable -> view.showAlert("Error fetching ingredients",true)
+                );
     }
 
 
