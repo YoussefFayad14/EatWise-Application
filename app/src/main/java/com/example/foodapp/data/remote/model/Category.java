@@ -2,7 +2,7 @@ package com.example.foodapp.data.remote.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CategoryItem {
+public class Category {
 
 	@SerializedName("strCategory")
 	private String strCategory;

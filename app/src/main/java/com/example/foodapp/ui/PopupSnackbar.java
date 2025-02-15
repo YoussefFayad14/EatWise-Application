@@ -36,7 +36,8 @@ public class PopupSnackbar extends Dialog {
         getWindow().setDimAmount(0f);
 
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.gravity = Gravity.TOP | Gravity.CENTER;
+        lp.gravity = Gravity.BOTTOM | Gravity.CENTER;
+        lp.y = 100;
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         getWindow().setAttributes(lp);

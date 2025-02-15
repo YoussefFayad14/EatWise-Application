@@ -27,12 +27,22 @@ public class HomeRepository {
         return apiService.getRandomMeal();
     }
 
-    public Observable<MealsCountryResponse> fetchPopularMealsFromAPI(String country) {
+    public Observable<MealResponse> fetchMealsByArea(String country) {
         return apiService.getMealsByArea(country);
+    }
+    public Observable<MealResponse> fetchMealsByCategory(String category) {
+        return apiService.getMealsByCategory(category);
+    }
+    public Observable<MealResponse> fetchMealsByIngredient(String ingredient) {
+        return apiService.getMealsByIngredient(ingredient);
     }
 
     public Observable<CategoriesResponse> fetchCategoriesFromAPI() {
         return apiService.getCategories();
+    }
+
+    public Observable<CategoriesResponse> fetchAllCategoriesFromAPI() {
+        return apiService.getAllCategories();
     }
 
     public Observable<AreasResponse> fetchCountriesFromAPI() {
@@ -42,5 +52,10 @@ public class HomeRepository {
     public Observable<IngredientResponse> fetchIngredientsFromAPI() {
         return apiService.getIngredients();
     }
-
+    public Single<MealResponse> searchMealByName(String mealName) {
+        return apiService.searchMealByName(mealName);
+    }
+    public Observable<MealResponse> listMealsByFirstLetter(String firstLetter) {
+        return apiService.listMealsByFirstLetter(firstLetter);
+    }
 }

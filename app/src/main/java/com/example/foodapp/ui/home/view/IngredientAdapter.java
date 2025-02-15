@@ -43,7 +43,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 .into(holder.itemImage);
 
         holder.itemView.setOnClickListener(view -> {
-            listener.onSectionClick(ingredient);
+            listener.onSectionClick(ingredient.getName(),"ingredients");
         });
     }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
 import com.example.foodapp.data.remote.model.Area;
+import com.example.foodapp.data.remote.model.CountryMapper;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
         holder.itemTitle.setText(country.getName());
 
         holder.itemView.setOnClickListener(view -> {
-            listener.onSectionClick(country);
+            listener.onSectionClick(country.getName(),"countries");
         });
     }
 

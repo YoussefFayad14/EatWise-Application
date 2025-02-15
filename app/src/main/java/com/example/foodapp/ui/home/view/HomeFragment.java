@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.remote.model.Area;
-import com.example.foodapp.data.remote.model.CategoryItem;
+import com.example.foodapp.data.remote.model.Category;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
@@ -21,7 +21,6 @@ import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.PopupSnackbar;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements onClickListener, HomeView {
@@ -96,7 +95,7 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
     }
 
     @Override
-    public void showCategories(List<CategoryItem> categories) {
+    public void showCategories(List<Category> categories) {
         recyclerView3.setAdapter(new CategoryAdapter(getContext(), categories, this));
     }
 
@@ -111,8 +110,11 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
     }
 
     @Override
-    public <T> void onSectionClick(T item) {
-        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment);
+    public void onSectionClick(String item, String sectionType) {
+        Bundle bundle = new Bundle();
+        bundle.putString("filterType",sectionType);
+        bundle.putString("value",item);
+        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment,bundle);
     }
 
     @Override
