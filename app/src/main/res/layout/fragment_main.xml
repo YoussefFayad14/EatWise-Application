@@ -32,7 +32,7 @@
                     android:layout_height="50dp"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/home_animation" />
+                    app:lottie_rawRes="@raw/loading_animation" />
 
                 <TextView
                     android:id="@+id/tv_search_toolbar"

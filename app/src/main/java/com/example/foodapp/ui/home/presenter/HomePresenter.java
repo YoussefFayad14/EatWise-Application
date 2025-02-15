@@ -1,13 +1,12 @@
 package com.example.foodapp.ui.home.presenter;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.example.foodapp.data.remote.model.CountryMapper;
-import com.example.foodapp.data.remote.IPApi.IpApiClient;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.home.view.HomeView;
+import com.example.foodapp.utils.CachedList;
 
 import java.util.Collections;
 
@@ -18,6 +17,7 @@ public class HomePresenter {
     private final HomeView view;
     private final HomeRepository homeRepository;
     private final LocationRepository locationRepository;
+    private final CachedList cachedList = CachedList.getInstance();
 
     public HomePresenter(HomeView view, HomeRepository homeRepository, LocationRepository locationRepository) {
         this.view = view;
@@ -62,7 +62,7 @@ public class HomePresenter {
         locationRepository.fetchLocationFromAPI()
                 .flatMapObservable(ipApiResponse -> {
                     ref.country = CountryMapper.getMappedCountry(ipApiResponse.getCountry());
-                    return homeRepository.fetchPopularMealsFromAPI(ref.country);
+                    return homeRepository.fetchMealsByArea(ref.country);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,12 +85,17 @@ public class HomePresenter {
 
     @SuppressLint("CheckResult")
     public void loadCountries() {
+        if (cachedList.getCountries() != null) {
+            view.showCountries(cachedList.getCountries());
+            return;
+        }
         homeRepository.fetchCountriesFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response -> {
                             if (response != null && response.getAreas() != null) {
+                                cachedList.saveCache("countries", response.getAreas());
                                 view.showCountries(CountryMapper.getCountriesByMappedValues(response.getAreas()));
                             } else {
                                 view.showCountries(Collections.emptyList());
@@ -102,12 +107,17 @@ public class HomePresenter {
 
     @SuppressLint("CheckResult")
     public void loadCategories() {
+        if (cachedList.getCategories() != null) {
+            view.showCategories(cachedList.getCategories());
+            return;
+        }
         homeRepository.fetchCategoriesFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response -> {
                             if (response != null && response.getCategories() != null) {
+                                cachedList.saveCache("categories", response.getCategories());
                                 view.showCategories(response.getCategories());
                             } else {
                                 view.showCategories(Collections.emptyList());
@@ -119,12 +129,17 @@ public class HomePresenter {
 
     @SuppressLint("CheckResult")
     public void loadIngredients() {
+        if (cachedList.getIngredients() != null) {
+            view.showIngredients(cachedList.getIngredients());
+            return;
+        }
         homeRepository.fetchIngredientsFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         response -> {
                             if (response != null && response.getIngredients() != null) {
+                                cachedList.saveCache("ingredients", response.getIngredients());
                                 view.showIngredients(response.getIngredients());
                             } else {
                                 view.showIngredients(Collections.emptyList());
@@ -133,11 +148,5 @@ public class HomePresenter {
                         throwable -> view.showAlert("Error fetching ingredients",true)
                 );
     }
-
-
-
-
-
-
 
 }

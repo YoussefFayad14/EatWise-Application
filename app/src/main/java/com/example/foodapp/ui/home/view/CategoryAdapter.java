@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodapp.R;
-import com.example.foodapp.data.remote.model.CategoryItem;
+import com.example.foodapp.data.remote.model.Category;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private Context context;
-    private List<CategoryItem> categoryList;
+    private List<Category> categoryList;
     private onClickListener listener;
 
-    public CategoryAdapter(Context context, List<CategoryItem> categories, onClickListener listener) {
+    public CategoryAdapter(Context context, List<Category> categories, onClickListener listener) {
         this.context = context;
         this.categoryList = categories;
         this.listener = listener;
@@ -36,14 +36,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        CategoryItem category = categoryList.get(position);
+        Category category = categoryList.get(position);
         holder.itemTitle.setText(category.getStrCategory());
         Glide.with(holder.itemView.getContext())
                 .load(category.getStrCategoryThumb())
                 .into(holder.itemImage);
 
         holder.itemView.setOnClickListener(view -> {
-            listener.onSectionClick(category);
+            listener.onSectionClick(category.getStrCategory(),"categories");
         });
     }
 

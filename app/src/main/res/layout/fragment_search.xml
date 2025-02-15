@@ -1,12 +1,23 @@
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    tools:context=".ui.search.view.SearchFragment">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieProgressBar"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/loading_animation"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
 
     <LinearLayout
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -54,21 +65,11 @@
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
+                android:id="@+id/chipGroupFilters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginHorizontal="8dp"
                 app:singleSelection="false">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_all"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/all"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:checkable="true"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_category"
@@ -78,8 +79,7 @@
                     android:text="@string/category"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    app:chipBackgroundColor="@color/white2"
-                    android:checkable="true"/>
+                    app:chipBackgroundColor="@color/white2"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_country"
@@ -89,8 +89,7 @@
                     android:text="@string/country"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    app:chipBackgroundColor="@color/white2"
-                    android:checkable="true"/>
+                    app:chipBackgroundColor="@color/white2"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_ingredient"
@@ -100,9 +99,67 @@
                     android:text="@string/ingredient"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    app:chipBackgroundColor="@color/white2"
-                    android:checkable="true"/>
+                    app:chipBackgroundColor="@color/white2"/>
+
             </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/filter_shape"
+            android:layout_marginHorizontal="12dp">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+            <LinearLayout
+                android:id="@+id/filterFrame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@android:color/transparent"
+                android:elevation="4dp"
+                android:padding="8dp"
+                android:visibility="gone">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupIngredient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <Button
+                    android:id="@+id/apply_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/apply"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/dark_green_color"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -112,6 +169,4 @@
             android:layout_marginHorizontal="8dp"
             tools:listitem="@layout/item_card_search"/>
     </LinearLayout>
-
-</FrameLayout>
-
+</RelativeLayout>
