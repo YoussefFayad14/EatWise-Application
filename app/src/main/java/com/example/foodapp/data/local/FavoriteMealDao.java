@@ -12,13 +12,17 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface FavoriteMealDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(FavoriteMeal meal);
+    Single<Long> insert(FavoriteMeal meal);
     @Delete
     Completable delete(FavoriteMeal meal);
+    @Query("DELETE FROM favorite_meals")
+    Completable deleteAllFavoriteMeals();
+
     @Query("SELECT * FROM favorite_meals")
     Observable<List<FavoriteMeal>> getAllFavoriteMeals();
 

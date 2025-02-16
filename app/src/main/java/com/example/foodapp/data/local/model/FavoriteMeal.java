@@ -25,6 +25,8 @@ public class FavoriteMeal {
     private String instructions;
     private String youtubeLink;
 
+    public FavoriteMeal() {}
+
     public FavoriteMeal(String mealId, String mealName, String mealCategory,String mealArea ,String mealImage,
                         List<String> ingredients, List<String> measures,
                         String instructions, String youtubeLink) {
@@ -40,13 +42,30 @@ public class FavoriteMeal {
     }
 
     public String getMealId() { return mealId; }
+    public void setMealId(String mealId) { this.mealId = mealId; }
+
     public String getMealName() { return mealName; }
+    public void setMealName(String mealName) { this.mealName = mealName; }
+
     public String getMealCategory() { return mealCategory; }
+    public void setMealCategory(String mealCategory) { this.mealCategory = mealCategory; }
+
     public String getMealArea() { return mealArea; }
+    public void setMealArea(String mealArea) { this.mealArea = mealArea; }
+
     public String getMealImage() { return mealImage; }
+    public void setMealImage(String mealImage) { this.mealImage = mealImage; }
+
     public List<String> getIngredients() { return ingredients; }
+    public void setIngredients(List<String> ingredients) { this.ingredients = ingredients; }
+
     public List<String> getMeasures() { return measures; }
+    public void setMeasures(List<String> measures) { this.measures = measures; }
+
     public String getInstructions() { return instructions; }
+    public void setInstructions(String instructions) { this.instructions = instructions; }
+
     public String getYoutubeLink() { return youtubeLink; }
+    public void setYoutubeLink(String youtubeLink) { this.youtubeLink = youtubeLink; }
 
 }

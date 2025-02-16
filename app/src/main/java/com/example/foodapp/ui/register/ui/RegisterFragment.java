@@ -23,6 +23,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.foodapp.R;
+import com.example.foodapp.data.local.AppDatabase;
+import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.register.RegisterContract;
 import com.example.foodapp.ui.register.presenter.RegisterPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,7 +49,12 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new RegisterPresenter(this, requireContext());
+        presenter = new RegisterPresenter(
+                this,
+                requireContext(),
+                new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()),
+                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
+                );
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.example.foodapp.R;
+import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.register.RegisterContract;
+import com.example.foodapp.utils.DataSyncUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
@@ -19,11 +22,13 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     private RegisterContract.View view;
     private FirebaseAuth mAuth;
     private Context context;
+    private DataSyncUtil dataSyncUtil;
 
-    public RegisterPresenter(RegisterContract.View view, Context context) {
+    public RegisterPresenter(RegisterContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository) {
         this.view = view;
         this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
+        this.dataSyncUtil = new DataSyncUtil(favoriteMealRepository, mealPlanRepository);
     }
 
     @Override
@@ -48,6 +53,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         saveUserLoginState(username, user.getEmail());
+                        dataSyncUtil.syncUserData();
                         view.navigateToMain();
                     }
                 })
@@ -80,6 +86,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
                         saveUserLoginState(user.getDisplayName(), user.getEmail());
+                        dataSyncUtil.syncUserData();
                         view.navigateToMain();
                     } else {
                         view.showErrorMessage("Google Sign-In failed. No user found.");

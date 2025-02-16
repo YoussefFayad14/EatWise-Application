@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WeekPlanPresenter {
@@ -69,6 +70,13 @@ public class WeekPlanPresenter {
     }
 
     @SuppressLint("CheckResult")
+    public Completable clearAllMealPlans() {
+        return mealPlanRepository.removeAllMealPlans()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @SuppressLint("CheckResult")
     public void loadMealsForDay(String day) {
         mealPlanRepository.getMealsForDay(day)
                 .subscribeOn(Schedulers.io())
@@ -88,4 +96,13 @@ public class WeekPlanPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(meal -> listener.onMealLoaded(new Converters().fromFavoriteMeal(meal)));
     }
+    @SuppressLint("CheckResult")
+    public Completable syncMealPlans() {
+        return mealPlanRepository.syncMealPlansFromFirebase()
+                .flatMapIterable(mealPlans -> mealPlans)
+                .flatMapCompletable(mealPlan -> mealPlanRepository.resetMeal(mealPlan))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 }
