@@ -21,6 +21,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.foodapp.R;
+import com.example.foodapp.data.local.AppDatabase;
+import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.login.LoginContract;
 import com.example.foodapp.ui.login.presenter.LoginPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -47,7 +50,12 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenter(this, requireContext());
+        presenter = new LoginPresenter(
+                this,
+                requireContext(),
+                new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()),
+                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
+        );
         auth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))

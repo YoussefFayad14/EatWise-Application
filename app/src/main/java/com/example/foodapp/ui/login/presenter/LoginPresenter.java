@@ -1,25 +1,36 @@
 package com.example.foodapp.ui.login.presenter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.Patterns;
 
+import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.login.LoginContract;
+import com.example.foodapp.utils.DataSyncUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class LoginPresenter implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final FirebaseAuth auth;
     private final SharedPreferences sharedPreferences;
+    private DataSyncUtil dataSyncUtil;
 
-    public LoginPresenter(LoginContract.View view, Context context) {
+    public LoginPresenter(LoginContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository) {
         this.view = view;
         this.auth = FirebaseAuth.getInstance();
         this.sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        this.dataSyncUtil = new DataSyncUtil(favoriteMealRepository, mealPlanRepository);
     }
 
     @Override
@@ -37,6 +48,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null && user.isEmailVerified()) {
                         saveUserLoginState(user.getUid());
+                        dataSyncUtil.syncUserData();
                         view.navigateToMain();
                     } else {
                         view.showErrorMessage("Email not verified. Please check your email.");
@@ -53,6 +65,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 FirebaseUser user = auth.getCurrentUser();
                 if (user != null) {
                     saveUserLoginState(user.getUid());
+                    dataSyncUtil.syncUserData();
                     view.navigateToMain();
                 }
             } else {
