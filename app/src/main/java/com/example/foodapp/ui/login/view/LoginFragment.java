@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,7 +22,7 @@ import android.widget.TextView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.login.LoginContract;
 import com.example.foodapp.ui.login.presenter.LoginPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,7 +52,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 this,
                 requireContext(),
                 new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()),
-                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
+                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
         );
         auth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

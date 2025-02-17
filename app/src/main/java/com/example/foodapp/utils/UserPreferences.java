@@ -9,6 +9,8 @@ public class UserPreferences {
     private static final String KEY_USERNAME = "USERNAME";
     private static final String KEY_EMAIL = "EMAIL";
     private static final String KEY_IS_GUEST = "IS_GUEST";
+    private static final String KEY_LAST_CLEANUP_DATE = "LAST_CLEANUP_DATE";
+
 
     private final SharedPreferences sharedPreferences;
 
@@ -52,5 +54,15 @@ public class UserPreferences {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public void setLastCleanupDate(String date) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_LAST_CLEANUP_DATE, date);
+        editor.apply();
+    }
+
+    public String getLastCleanupDate() {
+        return sharedPreferences.getString(KEY_LAST_CLEANUP_DATE, "");
     }
 }

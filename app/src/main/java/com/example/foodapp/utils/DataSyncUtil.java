@@ -1,10 +1,11 @@
 package com.example.foodapp.utils;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
 
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.favorite.presenter.FavoritePresenter;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
 
@@ -17,9 +18,9 @@ public class DataSyncUtil {
     private FavoritePresenter favoritePresenter;
     private WeekPlanPresenter weekPlanPresenter;
 
-    public DataSyncUtil(FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository){
+    public DataSyncUtil(Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository){
         this.favoritePresenter = new FavoritePresenter(null, favoriteMealRepository);
-        this.weekPlanPresenter = new WeekPlanPresenter(null, mealPlanRepository, favoriteMealRepository);
+        this.weekPlanPresenter = new WeekPlanPresenter(context,null, weekPlanRepository, favoriteMealRepository);
     }
     @SuppressLint("CheckResult")
     public void syncUserData() {

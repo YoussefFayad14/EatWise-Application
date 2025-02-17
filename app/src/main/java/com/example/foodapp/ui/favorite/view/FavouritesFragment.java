@@ -16,7 +16,7 @@ import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.favorite.presenter.FavoritePresenter;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
 import com.example.foodapp.utils.Converters;
@@ -88,8 +88,9 @@ public void showFavoriteMeals(List<FavoriteMeal> favoriteMeals) {
     @Override
     public void AddToPlanClick(FavoriteMeal meal) {
         WeekPlanPresenter weekPlanPresenter = new WeekPlanPresenter(
+                getContext(),
                 null,
-                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
+                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
                 new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
         );
         MealPlanDialogSheet bottomSheet = new MealPlanDialogSheet(meal, weekPlanPresenter);

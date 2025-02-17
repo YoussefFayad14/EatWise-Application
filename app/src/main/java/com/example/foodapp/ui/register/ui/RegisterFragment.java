@@ -3,7 +3,6 @@ package com.example.foodapp.ui.register.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.text.InputType;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +23,7 @@ import android.widget.TextView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.register.RegisterContract;
 import com.example.foodapp.ui.register.presenter.RegisterPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -53,7 +51,7 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
                 this,
                 requireContext(),
                 new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()),
-                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
+                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
                 );
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
