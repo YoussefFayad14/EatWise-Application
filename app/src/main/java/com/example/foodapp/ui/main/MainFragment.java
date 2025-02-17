@@ -1,5 +1,6 @@
 package com.example.foodapp.ui.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

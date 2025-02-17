@@ -1,6 +1,8 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="40dp"/>
-
-    <solid android:color="@color/main_color"/>
-
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:height="56dp">
+        <shape>
+            <solid android:color="@color/main_color"/>
+            <corners android:radius="40dp"/>
+        </shape>
+    </item>
+</layer-list>
