@@ -26,6 +26,7 @@ import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.meal.MealDetailsContract;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
 import com.example.foodapp.ui.PopupSnackbar;
+import com.example.foodapp.utils.NetworkUtil;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
     private TextView tvMealName, tvCategory, tvCountry, tvInstructions, tvMeasures;
     private GridLayout gridIngredients;
     private WebView webView;
+    private ImageView offlineImage;
     private ImageButton backButton;
     private Button btnAddFavourite, btnRemoveFavourite;
     private PopupSnackbar popupSnackbar;
@@ -61,6 +63,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         tvInstructions = view.findViewById(R.id.tv_instructions);
         gridIngredients = view.findViewById(R.id.grid_ingredients);
         tvMeasures = view.findViewById(R.id.tv_measures);
+        offlineImage = view.findViewById(R.id.img_offline);
         webView = view.findViewById(R.id.video);
         backButton = view.findViewById(R.id.back_Button2);
         btnAddFavourite = view.findViewById(R.id.btn_add_meal_favourite);
@@ -133,8 +136,15 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
 
     @Override
     public void playMealVideo(String videoUrl) {
-        if (videoUrl != null && !videoUrl.isEmpty()) {
-            setupWebView(videoUrl);
+        if(NetworkUtil.isNetworkAvailable(requireContext())){
+            offlineImage.setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+            if (videoUrl != null && !videoUrl.isEmpty()) {
+                setupWebView(videoUrl);
+            }
+        }else{
+            offlineImage.setVisibility(View.VISIBLE);
+            webView.setVisibility(View.GONE);
         }
     }
 
