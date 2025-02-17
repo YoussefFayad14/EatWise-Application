@@ -1,7 +1,5 @@
 package com.example.foodapp.data.repository;
 
-import android.util.Log;
-
 import com.example.foodapp.data.local.model.MealPlan;
 import com.example.foodapp.data.local.MealPlanDao;
 import com.example.foodapp.data.remote.FirebaseService;
@@ -14,12 +12,12 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MealPlanRepository {
+public class WeekPlanRepository {
     private MealPlanDao mealPlanDao;
     private FirebaseService firebaseService = new FirebaseService();
 
 
-    public MealPlanRepository(MealPlanDao mealPlanDao) {
+    public WeekPlanRepository(MealPlanDao mealPlanDao) {
         this.mealPlanDao = mealPlanDao;
     }
 
@@ -44,6 +42,9 @@ public class MealPlanRepository {
         return mealPlanDao.deleteAllMealPlans();
     }
 
+    public Completable removeMealsForYesterday(String yesterday) {
+        return mealPlanDao.deleteMealsForYesterday(yesterday);
+    }
 
     public Observable<List<MealPlan>> getMealsForDay(String day) {
         return mealPlanDao.getMealsForDay(day);

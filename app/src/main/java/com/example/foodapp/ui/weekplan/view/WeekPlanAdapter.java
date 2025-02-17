@@ -16,13 +16,13 @@ import com.example.foodapp.data.local.model.MealPlan;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealPlanAdapter extends RecyclerView.Adapter<MealPlanAdapter.MealViewHolder> {
+public class WeekPlanAdapter extends RecyclerView.Adapter<WeekPlanAdapter.MealViewHolder> {
     private Context context;
     private OnMealClickListener listener;
 
     private List<MealPlan> meals = new ArrayList<>();
 
-    public MealPlanAdapter(Context context, OnMealClickListener listener) {
+    public WeekPlanAdapter(Context context, OnMealClickListener listener) {
         this.context = context;
         this.listener = listener;
     }

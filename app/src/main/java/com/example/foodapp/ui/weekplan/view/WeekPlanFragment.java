@@ -28,7 +28,7 @@ import com.example.foodapp.data.local.model.CalendarDay;
 import com.example.foodapp.data.local.model.MealPlan;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
 import com.example.foodapp.ui.PopupSnackbar;
@@ -45,7 +45,7 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
     private WeekPlanPresenter presenter;
     private UserPreferences userPreferences;
     private CalendarAdapter calendarAdapter;
-    private MealPlanAdapter breakfastAdapter, lunchAdapter, dinnerAdapter;
+    private WeekPlanAdapter breakfastAdapter, lunchAdapter, dinnerAdapter;
     private List<CalendarDay> weekDays = new ArrayList<>();
 
     @Override
@@ -59,8 +59,9 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
         View view = inflater.inflate(R.layout.fragment_week_plan, container, false);
 
         presenter = new WeekPlanPresenter(
+                getContext(),
                 this,
-                new MealPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
+                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
                 new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
         );
 
@@ -76,9 +77,9 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
 
 
         calendarAdapter = new CalendarAdapter(getContext(),weekDays,dayNumMonth,this);
-        breakfastAdapter = new MealPlanAdapter(getContext(),this);
-        lunchAdapter = new MealPlanAdapter(getContext(),this);
-        dinnerAdapter = new MealPlanAdapter(getContext(),this);
+        breakfastAdapter = new WeekPlanAdapter(getContext(),this);
+        lunchAdapter = new WeekPlanAdapter(getContext(),this);
+        dinnerAdapter = new WeekPlanAdapter(getContext(),this);
 
         recyclerViewCalendar.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewBreakfast.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

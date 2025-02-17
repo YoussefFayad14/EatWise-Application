@@ -1,12 +1,10 @@
 package com.example.foodapp.ui.register.presenter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.example.foodapp.R;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.register.RegisterContract;
 import com.example.foodapp.utils.DataSyncUtil;
 import com.example.foodapp.utils.UserPreferences;
@@ -27,11 +25,11 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     private DataSyncUtil dataSyncUtil;
 
 
-    public RegisterPresenter(RegisterContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository) {
+    public RegisterPresenter(RegisterContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
         this.view = view;
         this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
-        this.dataSyncUtil = new DataSyncUtil(favoriteMealRepository, mealPlanRepository);
+        this.dataSyncUtil = new DataSyncUtil(context,favoriteMealRepository, weekPlanRepository);
         this.userPreferences = new UserPreferences(context);
     }
 

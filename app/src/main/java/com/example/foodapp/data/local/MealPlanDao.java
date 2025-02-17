@@ -21,6 +21,9 @@ public interface MealPlanDao {
     @Delete
     Completable deleteMeal(MealPlan mealPlan);
 
+    @Query("DELETE FROM meal_plan WHERE dayOfWeek = :yesterday")
+    Completable deleteMealsForYesterday(String yesterday);
+
     @Query("DELETE FROM meal_plan")
     Completable deleteAllMealPlans();
 

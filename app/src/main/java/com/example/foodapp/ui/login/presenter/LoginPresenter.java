@@ -1,13 +1,10 @@
 package com.example.foodapp.ui.login.presenter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.util.Patterns;
 
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.MealPlanRepository;
+import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.login.LoginContract;
 import com.example.foodapp.utils.DataSyncUtil;
 import com.example.foodapp.utils.UserPreferences;
@@ -17,21 +14,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
 public class LoginPresenter implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final FirebaseAuth auth;
     private final UserPreferences userPreferences;
     private DataSyncUtil dataSyncUtil;
 
-    public LoginPresenter(LoginContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository) {
+    public LoginPresenter(LoginContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
         this.view = view;
         this.auth = FirebaseAuth.getInstance();
         this.userPreferences = new UserPreferences(context);
-        this.dataSyncUtil = new DataSyncUtil(favoriteMealRepository, mealPlanRepository);
+        this.dataSyncUtil = new DataSyncUtil(context,favoriteMealRepository, weekPlanRepository);
     }
 
     @Override
