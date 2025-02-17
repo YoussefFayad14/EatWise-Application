@@ -22,7 +22,7 @@ import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.PopupSnackbar;
-import com.example.foodapp.ui.RetryDialog;
+import com.example.foodapp.ui.NetworkDialog;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
 import com.example.foodapp.utils.NetworkUtil;
 
@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
     }
 
     private void showRetryDialog() {
-        RetryDialog retryDialog = new RetryDialog(() -> {
+        NetworkDialog networkDialog = new NetworkDialog(() -> {
             if (NetworkUtil.isNetworkAvailable(requireContext())) {
                 presenter.loadPopularMeals();
                 presenter.loadCategories();
@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
                 contentView.setVisibility(View.GONE);
             }
         });
-        retryDialog.show(getChildFragmentManager(), "RetryDialog");
+        networkDialog.show(getChildFragmentManager(), "RetryDialog");
     }
 
     @Override

@@ -6,10 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".ui.weekplan.view.WeekPlanFragment">
 
-    <ScrollView
+
+    <LinearLayout
+        android:id="@+id/guestLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/img_no_data"
+            android:layout_marginBottom="10dp"
+            />
+
+        <Button
+            android:id="@+id/goToRegisterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/need_to_register"
+            android:backgroundTint="@color/main_color"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/planScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"

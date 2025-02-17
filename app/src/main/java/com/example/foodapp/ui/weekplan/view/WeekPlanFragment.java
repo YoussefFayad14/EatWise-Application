@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -29,13 +32,18 @@ import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
 import com.example.foodapp.ui.PopupSnackbar;
+import com.example.foodapp.utils.UserPreferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnMealClickListener,WeekPlanView{
+    private ScrollView planScrollView;
     private RecyclerView recyclerViewCalendar, recyclerViewBreakfast, recyclerViewLunch, recyclerViewDinner;
+    private LinearLayout guestLayout;
     private TextView dayNumMonth;
+    private Button btnRegister;
     private ImageButton btnAddNewMeal;
     private WeekPlanPresenter presenter;
+    private UserPreferences userPreferences;
     private CalendarAdapter calendarAdapter;
     private MealPlanAdapter breakfastAdapter, lunchAdapter, dinnerAdapter;
     private List<CalendarDay> weekDays = new ArrayList<>();
@@ -43,6 +51,7 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userPreferences = new UserPreferences(getContext());
     }
 
     @Override
@@ -59,7 +68,10 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
         recyclerViewBreakfast = view.findViewById(R.id.recyclerView_Breakfast);
         recyclerViewLunch = view.findViewById(R.id.recyclerView_Lunch);
         recyclerViewDinner = view.findViewById(R.id.recyclerView_Dinner);
+        planScrollView = view.findViewById(R.id.planScrollView);
+        guestLayout = view.findViewById(R.id.guestLayout);
         dayNumMonth = view.findViewById(R.id.day_num_month);
+        btnRegister = view.findViewById(R.id.goToRegisterButton);
         btnAddNewMeal = view.findViewById(R.id.btn_addNewMeal);
 
 
@@ -79,9 +91,17 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
         recyclerViewLunch.setAdapter(lunchAdapter);
         recyclerViewDinner.setAdapter(dinnerAdapter);
 
+        if (userPreferences.isGuest()){
+            guestLayout.setVisibility(View.VISIBLE);
+            planScrollView.setVisibility(View.GONE);
+        }else {
+            guestLayout.setVisibility(View.GONE);
+            planScrollView.setVisibility(View.VISIBLE);
+            presenter.loadCurrentWeek();
+            presenter.loadMealsForDay(new SimpleDateFormat("EEEE", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        }
 
-        presenter.loadCurrentWeek();
-        presenter.loadMealsForDay(new SimpleDateFormat("EEEE", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+        btnRegister.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_registerFragment));
         btnAddNewMeal.setOnClickListener(v -> addNewMeal());
 
         return view;

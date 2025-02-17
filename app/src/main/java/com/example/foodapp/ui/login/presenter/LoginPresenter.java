@@ -10,6 +10,7 @@ import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.login.LoginContract;
 import com.example.foodapp.utils.DataSyncUtil;
+import com.example.foodapp.utils.UserPreferences;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,13 +24,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class LoginPresenter implements LoginContract.Presenter {
     private final LoginContract.View view;
     private final FirebaseAuth auth;
-    private final SharedPreferences sharedPreferences;
+    private final UserPreferences userPreferences;
     private DataSyncUtil dataSyncUtil;
 
     public LoginPresenter(LoginContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository) {
         this.view = view;
         this.auth = FirebaseAuth.getInstance();
-        this.sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        this.userPreferences = new UserPreferences(context);
         this.dataSyncUtil = new DataSyncUtil(favoriteMealRepository, mealPlanRepository);
     }
 
@@ -47,7 +48,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null && user.isEmailVerified()) {
-                        saveUserLoginState(user.getUid());
+                        userPreferences.saveUserLogin(user.getDisplayName(), user.getEmail());
                         dataSyncUtil.syncUserData();
                         view.navigateToMain();
                     } else {
@@ -64,7 +65,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             if (authTask.isSuccessful()) {
                 FirebaseUser user = auth.getCurrentUser();
                 if (user != null) {
-                    saveUserLoginState(user.getUid());
+                    userPreferences.saveUserLogin(user.getDisplayName(), user.getEmail());
                     dataSyncUtil.syncUserData();
                     view.navigateToMain();
                 }
@@ -87,11 +88,9 @@ public class LoginPresenter implements LoginContract.Presenter {
                 })
                 .addOnFailureListener(e -> view.showErrorMessage("Failed to send reset email: " + e.getMessage()));
     }
-
-    private void saveUserLoginState(String uid) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("USER_UID", uid);
-        editor.putBoolean("IS_LOGGED_IN", true);
-        editor.apply();
+    @Override
+    public void loginAsGuest() {
+        userPreferences.saveGuestMode();
+        view.navigateToMain();
     }
 }
