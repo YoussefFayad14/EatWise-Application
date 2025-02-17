@@ -1,6 +1,5 @@
 package com.example.foodapp.ui.main;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.foodapp.ui.RetryDialog;
+import com.example.foodapp.ui.NetworkDialog;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.home.view.HomeFragment;
 import com.example.foodapp.ui.weekplan.view.WeekPlanFragment;
-import com.example.foodapp.ProfileFragment;
+import com.example.foodapp.ui.profile.view.ProfileFragment;
 import com.example.foodapp.R;
 import com.example.foodapp.utils.NetworkUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -80,12 +79,12 @@ public class MainFragment extends Fragment {
         transaction.commit();
     }
     private void showRetryDialog() {
-        RetryDialog retryDialog = new RetryDialog(() -> {
+        NetworkDialog networkDialog = new NetworkDialog(() -> {
             if (NetworkUtil.isNetworkAvailable(requireContext())) {
                navigateToSearchFragment();
             }
         });
-        retryDialog.show(getChildFragmentManager(), "RetryDialog");
+        networkDialog.show(getChildFragmentManager(), "RetryDialog");
     }
     private void navigateToSearchFragment() {
         Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment);

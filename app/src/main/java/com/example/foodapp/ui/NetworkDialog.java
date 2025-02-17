@@ -13,7 +13,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodapp.R;
 import com.example.foodapp.utils.NetworkUtil;
 
-public class RetryDialog extends DialogFragment {
+public class NetworkDialog extends DialogFragment {
 
     private RetryCallback callback;
 
@@ -21,13 +21,13 @@ public class RetryDialog extends DialogFragment {
         void onRetry();
     }
 
-    public RetryDialog(RetryCallback callback) {
+    public NetworkDialog(RetryCallback callback) {
         this.callback = callback;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_retry, container, false);
+        View view = inflater.inflate(R.layout.dialog_network, container, false);
 
         LottieAnimationView animationView = view.findViewById(R.id.retryLottieAnimation);
         TextView textViewMessage = view.findViewById(R.id.textMessage);

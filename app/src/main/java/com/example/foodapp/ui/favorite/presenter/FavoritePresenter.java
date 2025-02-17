@@ -1,16 +1,13 @@
 package com.example.foodapp.ui.favorite.presenter;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.favorite.view.FavoriteView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.CompletableSource;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavoritePresenter {
@@ -28,7 +25,7 @@ public class FavoritePresenter {
     }
 
     @SuppressLint("CheckResult")
-    public void getFavoriteProducts() {
+    public void getFavoriteMeals() {
         repository.getAllFavoriteMeals()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

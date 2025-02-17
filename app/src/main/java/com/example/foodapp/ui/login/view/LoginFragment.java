@@ -36,7 +36,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment implements LoginContract.View {
     private static final int RC_LOG_IN = 200;
-
     private TextView tvCreateAccount, tvErrorMessage, tvForgetPassword;
     private EditText etEmail, etPassword;
     private Button btnLoginAsGuest, btnLoginAsUser;
@@ -98,7 +97,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         tvCreateAccount.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registerFragment));
         tvForgetPassword.setOnClickListener(v -> presenter.resetPassword(etEmail.getText().toString().trim()));
 
-        btnLoginAsGuest.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_mainFragment));
+        btnLoginAsGuest.setOnClickListener(v -> presenter.loginAsGuest());
         btnLoginAsUser.setOnClickListener(v -> presenter.loginWithEmail(etEmail.getText().toString().trim(), etPassword.getText().toString().trim()));
 
         btnGoogleLogin.setOnClickListener(v -> {

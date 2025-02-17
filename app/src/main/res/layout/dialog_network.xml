@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="@color/white2"
+    android:background="@drawable/edittext_shape"
     android:gravity="center">
 
     <com.airbnb.lottie.LottieAnimationView

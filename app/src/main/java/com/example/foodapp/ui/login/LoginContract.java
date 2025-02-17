@@ -13,5 +13,7 @@ public interface LoginContract {
         void loginWithEmail(String email, String password);
         void loginWithGoogle(GoogleSignInAccount account);
         void resetPassword(String email);
+        void loginAsGuest();
+
     }
 }

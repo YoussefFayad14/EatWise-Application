@@ -9,6 +9,7 @@ import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.MealPlanRepository;
 import com.example.foodapp.ui.register.RegisterContract;
 import com.example.foodapp.utils.DataSyncUtil;
+import com.example.foodapp.utils.UserPreferences;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
@@ -21,14 +22,17 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class RegisterPresenter implements RegisterContract.Presenter {
     private RegisterContract.View view;
     private FirebaseAuth mAuth;
+    private UserPreferences userPreferences;
     private Context context;
     private DataSyncUtil dataSyncUtil;
+
 
     public RegisterPresenter(RegisterContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, MealPlanRepository mealPlanRepository) {
         this.view = view;
         this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
         this.dataSyncUtil = new DataSyncUtil(favoriteMealRepository, mealPlanRepository);
+        this.userPreferences = new UserPreferences(context);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     view.setRegisterButtonEnabled(true);
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        saveUserLoginState(username, user.getEmail());
+                        userPreferences.saveUserLogin(username, user.getEmail());
                         dataSyncUtil.syncUserData();
                         view.navigateToMain();
                     }
@@ -85,7 +89,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     view.setRegisterButtonEnabled(true);
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        saveUserLoginState(user.getDisplayName(), user.getEmail());
+                        userPreferences.saveUserLogin(user.getDisplayName(), user.getEmail());
                         dataSyncUtil.syncUserData();
                         view.navigateToMain();
                     } else {
@@ -102,15 +106,5 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         view.showErrorMessage("Authentication failed: " + e.getMessage());
                     }
                 });
-    }
-
-
-    private void saveUserLoginState(String username, String email) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("IS_LOGGED_IN", true);
-        editor.putString("USERNAME", username);
-        editor.putString("EMAIL", email);
-        editor.apply();
     }
 }

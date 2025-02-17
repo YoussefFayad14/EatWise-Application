@@ -71,6 +71,8 @@
     <string name="still_offline_check_your_internet">Still offline. Check your internet.</string>
     <string name="retry_connect">Retry Connect</string>
     <string name="google_sign_in_failed_try_again">Google Sign-In failed. Try again.</string>
+    <string name="you_need_to_register">You Need to Register</string>
+    <string name="need_to_register">Need To Register</string>
     <string-array name="week_days">
         <item>Saturday</item>
         <item>Sunday</item>
