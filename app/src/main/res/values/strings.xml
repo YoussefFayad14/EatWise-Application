@@ -66,6 +66,11 @@
     <string name="select_meal_type">Select Meal Type</string>
     <string name="apply">Apply</string>
     <string name="clear">Clear</string>
+    <string name="checking_your_connection">Checking your connection...</string>
+    <string name="retry">Retry</string>
+    <string name="still_offline_check_your_internet">Still offline. Check your internet.</string>
+    <string name="retry_connect">Retry Connect</string>
+    <string name="google_sign_in_failed_try_again">Google Sign-In failed. Try again.</string>
     <string-array name="week_days">
         <item>Saturday</item>
         <item>Sunday</item>

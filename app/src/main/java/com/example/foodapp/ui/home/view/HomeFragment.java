@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.remote.model.Area;
@@ -19,7 +22,9 @@ import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.PopupSnackbar;
+import com.example.foodapp.ui.RetryDialog;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
+import com.example.foodapp.utils.NetworkUtil;
 
 import java.util.List;
 
@@ -27,8 +32,10 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
 
     private ImageView imgMealDay;
     private TextView tvMealDay,tvCountry;
-    private Button btnCheckNow;
+    private Button btnCheckNow,retryButton;
     private RecyclerView recyclerView1, recyclerView2, recyclerView3, recyclerView4;
+    private ScrollView contentView;
+    private LinearLayout retryLayout;
     private HomePresenter presenter;
 
     public HomeFragment() {}
@@ -39,10 +46,13 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
 
         presenter = new HomePresenter(this, new HomeRepository(), new LocationRepository());
 
+        retryLayout = view.findViewById(R.id.retryLayout);
+        contentView = view.findViewById(R.id.contentScrollView);
         imgMealDay = view.findViewById(R.id.imageMealDay);
         tvMealDay = view.findViewById(R.id.tvMealDay);
         tvCountry = view.findViewById(R.id.tvCountry);
         btnCheckNow = view.findViewById(R.id.btnCheckNow);
+        retryButton = view.findViewById(R.id.retryButton);
         recyclerView1 = view.findViewById(R.id.recyclerView1);
         recyclerView2 = view.findViewById(R.id.recyclerView2);
         recyclerView3 = view.findViewById(R.id.recyclerView3);
@@ -53,13 +63,14 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
         recyclerView3.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView4.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        presenter.loadPopularMeals();
-        presenter.loadCategories();
-        presenter.loadCountries();
-        presenter.loadIngredients();
+        loadData();
 
         View.OnClickListener mealDayListener = click -> {
-            presenter.loadRandomMeal();
+            if (NetworkUtil.isNetworkAvailable(getContext())) {
+                presenter.loadRandomMeal();
+            }else {
+                showRetryDialog();
+            }
         };
 
         imgMealDay.setOnClickListener(mealDayListener);
@@ -67,6 +78,38 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
         btnCheckNow.setOnClickListener(mealDayListener);
 
         return view;
+    }
+
+    private void loadData() {
+        if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+            retryButton.setOnClickListener(view1 -> {
+                showRetryDialog();
+            });
+        }else{
+            presenter.loadPopularMeals();
+            presenter.loadCategories();
+            presenter.loadCountries();
+            presenter.loadIngredients();
+            retryLayout.setVisibility(View.GONE);
+            contentView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showRetryDialog() {
+        RetryDialog retryDialog = new RetryDialog(() -> {
+            if (NetworkUtil.isNetworkAvailable(requireContext())) {
+                presenter.loadPopularMeals();
+                presenter.loadCategories();
+                presenter.loadCountries();
+                presenter.loadIngredients();
+                retryLayout.setVisibility(View.GONE);
+                contentView.setVisibility(View.VISIBLE);
+            } else {
+                retryLayout.setVisibility(View.VISIBLE);
+                contentView.setVisibility(View.GONE);
+            }
+        });
+        retryDialog.show(getChildFragmentManager(), "RetryDialog");
     }
 
     @Override
@@ -111,14 +154,23 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
 
     @Override
     public void onSectionClick(String item, String sectionType) {
-        Bundle bundle = new Bundle();
-        bundle.putString("filterType",sectionType);
-        bundle.putString("value",item);
-        Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment,bundle);
+        if(NetworkUtil.isNetworkAvailable(getContext())){
+            Bundle bundle = new Bundle();
+            bundle.putString("filterType",sectionType);
+            bundle.putString("value",item);
+            Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_searchFragment,bundle);
+        }else {
+            showRetryDialog();
+        }
+
     }
 
     @Override
     public void onMealClick(Meal meal) {
-        presenter.loadSelectedMeal(meal.getIdMeal());
+        if(NetworkUtil.isNetworkAvailable(getContext())) {
+            presenter.loadSelectedMeal(meal.getIdMeal());
+        }else {
+            showRetryDialog();
+        }
     }
 }

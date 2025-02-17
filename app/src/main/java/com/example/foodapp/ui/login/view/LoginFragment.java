@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 }
             } catch (ApiException e) {
                 Log.e("GoogleLogin", "Google Sign-In failed: " + e.getStatusCode());
-                tvErrorMessage.setText("Google Sign-In failed. Try again.");
+                tvErrorMessage.setText(R.string.google_sign_in_failed_try_again);
             }
         }
     }

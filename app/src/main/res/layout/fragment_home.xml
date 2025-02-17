@@ -7,10 +7,35 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.view.HomeFragment">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/retryLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/img_no_wifi"
+        android:layout_marginBottom="10dp"
+        />
+
+    <Button
+        android:id="@+id/retryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry_connect"
+        android:backgroundTint="@color/main_color"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/contentScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
             <LinearLayout
                 android:orientation="vertical"
