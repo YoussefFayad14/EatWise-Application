@@ -34,9 +34,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
     private TextView tvMealName, tvCategory, tvCountry, tvInstructions, tvMeasures;
     private GridLayout gridIngredients;
     private WebView webView;
-    private ImageView offlineImage;
-    private ImageButton backButton;
-    private Button btnAddFavourite, btnRemoveFavourite;
+    private ImageView offlineImage, imageMeal;
+    private ImageButton backButton,btnAddFavourite;
     private PopupSnackbar popupSnackbar;
     private MealDetailsPresenter presenter;
     private Meal meal;
@@ -48,7 +47,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            meal = (Meal) getArguments().getParcelable("meal");
+            meal = getArguments().getParcelable("meal");
             presenter = new MealDetailsPresenter(this, meal, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
         }
     }
@@ -63,11 +62,11 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
         tvInstructions = view.findViewById(R.id.tv_instructions);
         gridIngredients = view.findViewById(R.id.grid_ingredients);
         tvMeasures = view.findViewById(R.id.tv_measures);
+        imageMeal = view.findViewById(R.id.imageMeal);
         offlineImage = view.findViewById(R.id.img_offline);
         webView = view.findViewById(R.id.video);
+        btnAddFavourite = view.findViewById(R.id.addToFavourite);
         backButton = view.findViewById(R.id.back_Button2);
-        btnAddFavourite = view.findViewById(R.id.btn_add_meal_favourite);
-        btnRemoveFavourite = view.findViewById(R.id.btn_remove_meal_favourite);
         popupSnackbar = new PopupSnackbar(requireContext());
 
         presenter.loadMealDetails();
@@ -88,24 +87,16 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
             ));
         });
 
-        btnRemoveFavourite.setOnClickListener(v -> {
-            presenter.removeFromFavorites(new FavoriteMeal(
-                    meal.getIdMeal(),
-                    meal.getMealName(),
-                    meal.getCategory(),
-                    meal.getArea(),
-                    meal.getMealThumb(),
-                    meal.getIngredients(),
-                    meal.getMeasures(),
-                    meal.getInstructions(),
-                    meal.getYoutubeLink()
-            ));
-        });
-
         return view;
     }
 
-
+    private void loadMealImage(String mealThumb) {
+        if (mealThumb != null && !mealThumb.isEmpty()) {
+            Glide.with(requireContext())
+                    .load(mealThumb)
+                    .into(imageMeal);
+        }
+    }
 
     private void loadIngredientsImage(List<String> ingredients) {
         gridIngredients.removeAllViews();
@@ -125,6 +116,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsContract
 
     @Override
     public void showMealDetails(String name, String category, String country, String instructions, List<String> ingredients, String measures, String youtubeLink, String mealThumb) {
+        loadMealImage(mealThumb);
         tvMealName.setText(name);
         tvCategory.setText(category);
         tvCountry.setText(country);
