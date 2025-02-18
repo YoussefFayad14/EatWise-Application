@@ -73,6 +73,8 @@
     <string name="google_sign_in_failed_try_again">Google Sign-In failed. Try again.</string>
     <string name="you_need_to_register">You Need to Register</string>
     <string name="need_to_register">Need To Register</string>
+    <string name="youtube">Youtube</string>
+    <string name="measures">Measures</string>
     <string-array name="week_days">
         <item>Saturday</item>
         <item>Sunday</item>
