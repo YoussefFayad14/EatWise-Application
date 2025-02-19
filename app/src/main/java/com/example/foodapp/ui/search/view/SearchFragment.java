@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -25,7 +25,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
-import com.example.foodapp.ui.PopupSnackbar;
+import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.ui.search.presenter.SearchPresenter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -38,15 +38,17 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
     private EditText searchEditText;
     private ImageButton backButton;
     private RecyclerView recyclerView;
-    private Chip chipCategory, chipCountry, chipIngredient;
-    private ChipGroup selectedGroupChip;
-
+    private Chip selectedChipGroup;
+    private Chip chipAll,chipCategory, chipCountry, chipIngredient;
+    private Chip selectedChip;
     private ChipGroup chipGroupCategory, chipGroupCountry, chipGroupIngredient;
     private Button applyButton;
     private LinearLayout filterFrame;
+    private FrameLayout lottieOverlay;
     private LottieAnimationView loadingProgressBar;
     private SearchAdapter searchAdapter;
     private SearchPresenter searchPresenter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         searchEditText = view.findViewById(R.id.ed_search_toolbar);
         backButton = view.findViewById(R.id.back_Button);
         recyclerView = view.findViewById(R.id.recyclerView);
+        chipAll = view.findViewById(R.id.chip_all);
         chipCategory = view.findViewById(R.id.chip_category);
         chipCountry = view.findViewById(R.id.chip_country);
         chipIngredient = view.findViewById(R.id.chip_ingredient);
@@ -65,6 +68,7 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         chipGroupCategory = view.findViewById(R.id.chipGroupCategory);
         chipGroupCountry = view.findViewById(R.id.chipGroupCountry);
         chipGroupIngredient = view.findViewById(R.id.chipGroupIngredient);
+        lottieOverlay = view.findViewById(R.id.lottieOverlay);
         loadingProgressBar = view.findViewById(R.id.lottieProgressBar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -74,11 +78,10 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         backButton.setOnClickListener(view1 -> navigateToMainFragment());
 
         applyButton.setOnClickListener(view1 -> {
-            selectedGroupChip.setBackground(getResources().getDrawable(R.color.dark_green_color));
+            searchPresenter.filterBy(selectedFilterType(), selectedChip.getText().toString());
             applyButton.setVisibility(View.GONE);
             filterFrame.setVisibility(View.GONE);
         });
-
 
 
         searchPresenter.loadFilterOptions();
@@ -98,8 +101,6 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
 
             if (filterType != null && value != null) {
                 searchPresenter.filterBy(filterType, value);
-            }else {
-                searchPresenter.loadMeals();
             }
         }
     }
@@ -114,12 +115,12 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                filterMeals();
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                applyButton.setVisibility(View.GONE);
+                filterFrame.setVisibility(View.GONE);
                 updateSearchIcon(s.toString());
                 searchPresenter.searchQueryChanged(s.toString());
             }
@@ -141,21 +142,109 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupFilterSelection() {
-        chipCategory.setOnClickListener(v -> {
+        chipAll.setChecked(true);
+        chipAll.setChipBackgroundColorResource(R.color.dark_green_color);
+        chipAll.setTextColor(getResources().getColor(R.color.white));
+
+        chipAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            searchPresenter.clearAllFilters();
+            filterFrame.setVisibility(View.GONE);
+            applyButton.setVisibility(View.GONE);
+            if (isChecked) {
+                chipAll.setChipBackgroundColorResource(R.color.dark_green_color);
+                chipAll.setTextColor(getResources().getColor(R.color.white));
+
+                chipCategory.setChipBackgroundColorResource(R.color.white);
+                chipCategory.setTextColor(getResources().getColor(R.color.black));
+
+                chipCountry.setChipBackgroundColorResource(R.color.white);
+                chipCountry.setTextColor(getResources().getColor(R.color.black));
+
+                chipIngredient.setChipBackgroundColorResource(R.color.white);
+                chipIngredient.setTextColor(getResources().getColor(R.color.black));
+
+            } else {
+                chipAll.setChipBackgroundColorResource(R.color.white);
+                chipAll.setTextColor(getResources().getColor(R.color.black));
+            }
+        });
+
+        chipCategory.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            selectedChipGroup = chipCategory;
+            if (isChecked) {
+                chipCategory.setChipBackgroundColorResource(R.color.dark_green_color);
+                chipCategory.setTextColor(getResources().getColor(R.color.white));
+
+                chipAll.setChipBackgroundColorResource(R.color.white);
+                chipAll.setTextColor(getResources().getColor(R.color.black));
+
+                chipCountry.setChipBackgroundColorResource(R.color.white);
+                chipCountry.setTextColor(getResources().getColor(R.color.black));
+
+                chipIngredient.setChipBackgroundColorResource(R.color.white);
+                chipIngredient.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                chipCategory.setChipBackgroundColorResource(R.color.white);
+                chipCategory.setTextColor(getResources().getColor(R.color.black));
+            }
             showFilterGroup(chipGroupCategory);
-            selectedGroupChip = chipGroupCategory;
         });
-        chipCountry.setOnClickListener(v -> {
+
+        chipCountry.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            selectedChipGroup = chipCountry;
+            if (isChecked) {
+                chipCountry.setChipBackgroundColorResource(R.color.dark_green_color);
+                chipCountry.setTextColor(getResources().getColor(R.color.white));
+
+                chipAll.setChipBackgroundColorResource(R.color.white);
+                chipAll.setTextColor(getResources().getColor(R.color.black));
+
+                chipCategory.setChipBackgroundColorResource(R.color.white);
+                chipCategory.setTextColor(getResources().getColor(R.color.black));
+
+                chipIngredient.setChipBackgroundColorResource(R.color.white);
+                chipIngredient.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                chipCountry.setChipBackgroundColorResource(R.color.white);
+                chipCountry.setTextColor(getResources().getColor(R.color.black));
+            }
             showFilterGroup(chipGroupCountry);
-            selectedGroupChip = chipGroupCountry;
         });
-        chipIngredient.setOnClickListener(v -> {
+
+        chipIngredient.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            selectedChipGroup = chipIngredient;
+            if (isChecked) {
+                chipIngredient.setChipBackgroundColorResource(R.color.dark_green_color);
+                chipIngredient.setTextColor(getResources().getColor(R.color.white));
+
+                chipAll.setChipBackgroundColorResource(R.color.white);
+                chipAll.setTextColor(getResources().getColor(R.color.black));
+
+                chipCategory.setChipBackgroundColorResource(R.color.white);
+                chipCategory.setTextColor(getResources().getColor(R.color.black));
+
+                chipCountry.setChipBackgroundColorResource(R.color.white);
+                chipCountry.setTextColor(getResources().getColor(R.color.black));
+            } else {
+                chipIngredient.setChipBackgroundColorResource(R.color.white);
+                chipIngredient.setTextColor(getResources().getColor(R.color.black));
+            }
             showFilterGroup(chipGroupIngredient);
-            selectedGroupChip = chipGroupIngredient;
         });
     }
 
+    private String selectedFilterType() {
+        if (selectedChipGroup == chipCategory) {
+            return "categories";
+        } else if (selectedChipGroup == chipCountry) {
+            return "countries";
+        } else if (selectedChipGroup == chipIngredient) {
+            return "ingredients";
+        }
+        return null;
+    }
     private void showFilterGroup(ChipGroup selectedGroup) {
         filterFrame.removeAllViews();
         filterFrame.addView(selectedGroup);
@@ -163,34 +252,19 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
             Chip chip = (Chip) selectedGroup.getChildAt(i);
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
+                    searchPresenter.clearAllFilters();
+                    clearOtherSelections(selectedGroup, chip);
+                    selectedChip = chip;
                     chip.setChipBackgroundColor(getResources().getColorStateList(R.color.main_color));
                 } else {
                     chip.setChipBackgroundColor(getResources().getColorStateList(R.color.white2));
                 }
             });
         }
+
         applyButton.setVisibility(View.VISIBLE);
         filterFrame.setVisibility(View.VISIBLE);
     }
-
-    private void filterMeals() {
-        List<String> categoryFilter = getSelectedFilters(chipGroupCategory);
-        List<String> countryFilter = getSelectedFilters(chipGroupCountry);
-        List<String> ingredientFilter = getSelectedFilters(chipGroupIngredient);
-        searchPresenter.setFilters(categoryFilter, countryFilter, ingredientFilter);
-    }
-
-    private List<String> getSelectedFilters(ChipGroup chipGroup) {
-        List<String> filters = new ArrayList<>();
-        for (int i = 0; i < chipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) chipGroup.getChildAt(i);
-            if (chip.isChecked()) {
-                filters.add(chip.getText().toString());
-            }
-        }
-        return filters;
-    }
-
 
 
     private void updateSearchIcon(String s) {
@@ -230,6 +304,15 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         }
     }
 
+    private void clearOtherSelections(ChipGroup chipGroup, Chip selectedChip) {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            if (chip != selectedChip) {
+                chip.setChecked(false);
+            }
+        }
+    }
+
     @Override
     public void clearSearchResults() {
         searchAdapter.updateData(new ArrayList<>());
@@ -242,13 +325,13 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
 
     @Override
     public void showLoading() {
-        loadingProgressBar.setVisibility(View.VISIBLE);
+        lottieOverlay.setVisibility(View.VISIBLE);
         loadingProgressBar.playAnimation();
     }
 
     @Override
     public void hideLoading() {
-        loadingProgressBar.setVisibility(View.GONE);
+        lottieOverlay.setVisibility(View.GONE);
         loadingProgressBar.cancelAnimation();
     }
 

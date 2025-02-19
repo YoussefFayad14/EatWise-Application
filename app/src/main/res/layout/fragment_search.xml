@@ -6,29 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.view.SearchFragment">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieProgressBar"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/loading_animation"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"/>
+    <FrameLayout
+        android:id="@+id/lottieOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieProgressBar"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            app:lottie_rawRes="@raw/loading_animation"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:layout_marginBottom="30dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="30dp"
-            android:background="@color/white">
+            android:background="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,7 +77,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                app:singleSelection="false">
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_all"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/all"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_category"
@@ -79,8 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/category"
                     android:textStyle="bold"
-                    android:textSize="16sp"
-                    app:chipBackgroundColor="@color/white2"/>
+                    android:textSize="16sp"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_country"
@@ -89,8 +104,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/country"
                     android:textStyle="bold"
-                    android:textSize="16sp"
-                    app:chipBackgroundColor="@color/white2"/>
+                    android:textSize="16sp"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_ingredient"
@@ -99,8 +113,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/ingredient"
                     android:textStyle="bold"
-                    android:textSize="16sp"
-                    app:chipBackgroundColor="@color/white2"/>
+                    android:textSize="16sp"/>
 
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
@@ -168,6 +181,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="30dp"
             tools:listitem="@layout/item_card_search"/>
     </LinearLayout>
 </RelativeLayout>

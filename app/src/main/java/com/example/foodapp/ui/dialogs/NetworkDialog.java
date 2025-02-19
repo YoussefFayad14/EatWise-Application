@@ -1,4 +1,4 @@
-package com.example.foodapp.ui;
+package com.example.foodapp.ui.dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

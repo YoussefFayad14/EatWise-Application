@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.foodapp.ui.NetworkDialog;
+import com.example.foodapp.ui.dialogs.NetworkDialog;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.home.view.HomeFragment;
 import com.example.foodapp.ui.weekplan.view.WeekPlanFragment;

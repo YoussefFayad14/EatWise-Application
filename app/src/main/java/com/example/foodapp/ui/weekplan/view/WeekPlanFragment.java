@@ -31,7 +31,7 @@ import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.WeekPlanRepository;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
-import com.example.foodapp.ui.PopupSnackbar;
+import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.utils.UserPreferences;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
