@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainFragment">
+    tools:context=".ui.main.MainFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="30dp"
             android:padding="4dp">
 
             <LinearLayout
@@ -32,7 +33,7 @@
                     android:layout_height="50dp"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/home_animation" />
+                    app:lottie_rawRes="@raw/loading_animation" />
 
                 <TextView
                     android:id="@+id/tv_search_toolbar"
@@ -57,7 +58,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginTop="8dp"
             />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -65,8 +66,7 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/bottom_nav_menu_shape"
             app:menu="@menu/bottom_nav_menu"
             app:labelVisibilityMode="unlabeled"

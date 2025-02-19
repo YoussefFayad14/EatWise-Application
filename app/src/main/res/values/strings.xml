@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food</string>
+    <string name="app_name">EatWise</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="email">Email</string>
@@ -24,8 +24,8 @@
     <string name="meal_day">Meal Day</string>
     <string name="categories">Categories</string>
     <string name="countries">Countries</string>
-    <string name="most_popular_in">Most Popular in</string>
-    <string name="egypt">Egypt</string>
+    <string name="most_popular_meals_in">Most Popular Meals</string>
+    <string name="world">World</string>
     <string name="sample_card_title">Sample Card Title</string>
     <string name="sample_card_country_title">USA</string>
     <string name="remove">Remove</string>
@@ -56,5 +56,35 @@
     <string name="instructions">Instructions</string>
     <string name="example_instructions">Place the raisins and prunes into a small bowl and pour over enough water to cover. Add lemon juice and let soak for at least 1 hour.</string>
     <string name="default_web_client_id">921088706382-vfnt0i84hfnlnm0vl4mku08jv1m6a1mr.apps.googleusercontent.com</string>
+    <string name="or_register_with">or Register with</string>
+    <string name="area">Area</string>
+    <string name="remove_from_favorites">Remove from Favorites</string>
+    <string name="add_to_favorites">Add to Favorites</string>
+    <string name="week_plan">Week Plan</string>
+    <string name="add_meal_to_plan">Add Meal to Plan</string>
+    <string name="select_day">Select Day</string>
+    <string name="select_meal_type">Select Meal Type</string>
+    <string name="apply">Apply</string>
+    <string name="clear">Clear</string>
+    <string name="checking_your_connection">Checking your connection...</string>
+    <string name="retry">Retry</string>
+    <string name="still_offline_check_your_internet">Still offline. Check your internet.</string>
+    <string name="retry_connect">Retry Connect</string>
+    <string name="google_sign_in_failed_try_again">Google Sign-In failed. Try again.</string>
+    <string name="you_need_to_register">You Need to Register</string>
+    <string name="need_to_register">Need To Register</string>
+    <string name="youtube">Youtube</string>
+    <string name="measures">Measures</string>
+    <string-array name="week_days">
+        <item>Saturday</item>
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
+
+
 
 </resources>
