@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food</string>
+    <string name="app_name">EatWise</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="email">Email</string>

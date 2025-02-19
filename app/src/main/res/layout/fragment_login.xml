@@ -104,6 +104,7 @@
             android:layout_marginStart="12dp"
             android:backgroundTint="@color/main_color"
             android:text="@string/login_as_guest"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:layout_marginEnd="20dp"
             />
@@ -114,6 +115,7 @@
             android:layout_marginStart="12dp"
             android:backgroundTint="@color/main_color"
             android:text="@string/login"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="20dp"
