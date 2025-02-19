@@ -24,7 +24,6 @@ import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.WeekPlanRepository;
-import com.example.foodapp.ui.register.RegisterContract;
 import com.example.foodapp.ui.register.presenter.RegisterPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,7 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class RegisterFragment extends Fragment implements RegisterContract.View {
+public class RegisterFragment extends Fragment implements RegisterView {
     private EditText etUsername, etEmail, etPassword;
     private TextView tv_BackToLogin, tvErrorMessage;
     private Button btnRegister;

@@ -23,7 +23,6 @@ import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.WeekPlanRepository;
-import com.example.foodapp.ui.login.LoginContract;
 import com.example.foodapp.ui.login.presenter.LoginPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -33,7 +32,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginFragment extends Fragment implements LoginContract.View {
+public class LoginFragment extends Fragment implements LoginView {
     private static final int RC_LOG_IN = 200;
     private TextView tvCreateAccount, tvErrorMessage, tvForgetPassword;
     private EditText etEmail, etPassword;

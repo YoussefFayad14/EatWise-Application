@@ -13,10 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.foodapp.R;
-import com.example.foodapp.ui.splash.SplashContract;
 import com.example.foodapp.ui.splash.presenter.SplashPresenter;
 
-public class SplashFragment extends Fragment implements SplashContract.View {
+public class SplashFragment extends Fragment implements SplashView {
     private SplashPresenter presenter;
 
     public SplashFragment() {}

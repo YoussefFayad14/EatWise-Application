@@ -5,7 +5,8 @@ import android.util.Patterns;
 
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.WeekPlanRepository;
-import com.example.foodapp.ui.login.LoginContract;
+import com.example.foodapp.ui.login.view.LoginFragment;
+import com.example.foodapp.ui.login.view.LoginView;
 import com.example.foodapp.utils.DataSyncUtil;
 import com.example.foodapp.utils.UserPreferences;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -14,20 +15,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginPresenter implements LoginContract.Presenter {
-    private final LoginContract.View view;
+public class LoginPresenter{
+    private final LoginView view;
     private final FirebaseAuth auth;
     private final UserPreferences userPreferences;
     private DataSyncUtil dataSyncUtil;
 
-    public LoginPresenter(LoginContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
+    public LoginPresenter(LoginFragment view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
         this.view = view;
         this.auth = FirebaseAuth.getInstance();
         this.userPreferences = new UserPreferences(context);
         this.dataSyncUtil = new DataSyncUtil(context,favoriteMealRepository, weekPlanRepository);
     }
 
-    @Override
     public void loginWithEmail(String email, String password) {
         if (email.isEmpty() || password.isEmpty()) {
             view.showErrorMessage("Enter email and password.");
@@ -51,7 +51,6 @@ public class LoginPresenter implements LoginContract.Presenter {
                 .addOnFailureListener(e -> view.showErrorMessage("Login failed: " + e.getMessage()));
     }
 
-    @Override
     public void loginWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         auth.signInWithCredential(credential).addOnCompleteListener(authTask -> {
@@ -68,7 +67,6 @@ public class LoginPresenter implements LoginContract.Presenter {
         });
     }
 
-    @Override
     public void resetPassword(String email) {
         if (email.isEmpty()) {
             view.showErrorMessage("Enter your email to reset password");
@@ -81,7 +79,6 @@ public class LoginPresenter implements LoginContract.Presenter {
                 })
                 .addOnFailureListener(e -> view.showErrorMessage("Failed to send reset email: " + e.getMessage()));
     }
-    @Override
     public void loginAsGuest() {
         userPreferences.saveGuestMode();
         view.navigateToMain();

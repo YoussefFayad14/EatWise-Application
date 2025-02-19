@@ -22,14 +22,13 @@ import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.ui.meal.MealDetailsContract;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
 import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.utils.NetworkUtil;
 
 import java.util.List;
 
-public class MealDetailsFragment extends Fragment implements MealDetailsContract.View {
+public class MealDetailsFragment extends Fragment implements MealDetailsView{
     private TextView tvMealName, tvCategory, tvCountry, tvInstructions, tvMeasures;
     private GridLayout gridIngredients;
     private WebView webView;

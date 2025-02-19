@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.data.repository.WeekPlanRepository;
-import com.example.foodapp.ui.register.RegisterContract;
+import com.example.foodapp.ui.register.ui.RegisterView;
 import com.example.foodapp.utils.DataSyncUtil;
 import com.example.foodapp.utils.UserPreferences;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -17,15 +17,15 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class RegisterPresenter implements RegisterContract.Presenter {
-    private RegisterContract.View view;
+public class RegisterPresenter {
+    private RegisterView view;
     private FirebaseAuth mAuth;
     private UserPreferences userPreferences;
     private Context context;
     private DataSyncUtil dataSyncUtil;
 
 
-    public RegisterPresenter(RegisterContract.View view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
+    public RegisterPresenter(RegisterView view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
         this.view = view;
         this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
@@ -33,7 +33,6 @@ public class RegisterPresenter implements RegisterContract.Presenter {
         this.userPreferences = new UserPreferences(context);
     }
 
-    @Override
     public void registerUser(String username,String email, String password) {
         if (TextUtils.isEmpty(username)) {
             view.showErrorMessage("Username cannot be empty");
@@ -72,7 +71,6 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                 });
     }
 
-    @Override
     public void signInWithGoogle(GoogleSignInAccount account) {
         if (account == null || account.getIdToken() == null) {
             view.showErrorMessage("Google Sign-In failed. No account selected.");
