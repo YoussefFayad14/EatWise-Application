@@ -107,6 +107,7 @@
             android:layout_height="60dp"
             android:backgroundTint="@color/main_color"
             android:text="@string/register"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="12dp"

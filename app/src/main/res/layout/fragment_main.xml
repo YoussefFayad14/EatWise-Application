@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             android:layout_marginTop="30dp"
             android:padding="4dp">
 
