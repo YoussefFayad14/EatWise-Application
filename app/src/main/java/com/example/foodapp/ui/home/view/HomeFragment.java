@@ -21,8 +21,8 @@ import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.HomeRepository;
 import com.example.foodapp.data.repository.LocationRepository;
-import com.example.foodapp.ui.PopupSnackbar;
-import com.example.foodapp.ui.NetworkDialog;
+import com.example.foodapp.ui.dialogs.PopupSnackbar;
+import com.example.foodapp.ui.dialogs.NetworkDialog;
 import com.example.foodapp.ui.home.presenter.HomePresenter;
 import com.example.foodapp.utils.NetworkUtil;
 

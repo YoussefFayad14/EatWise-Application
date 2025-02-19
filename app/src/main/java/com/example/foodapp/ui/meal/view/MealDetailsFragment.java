@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,7 +24,7 @@ import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.meal.MealDetailsContract;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
-import com.example.foodapp.ui.PopupSnackbar;
+import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.utils.NetworkUtil;
 
 import java.util.List;

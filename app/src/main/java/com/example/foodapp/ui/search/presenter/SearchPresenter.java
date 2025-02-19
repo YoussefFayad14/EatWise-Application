@@ -3,9 +3,7 @@ package com.example.foodapp.ui.search.presenter;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.airbnb.lottie.L;
 import com.example.foodapp.data.remote.MealApi.MealResponse;
-import com.example.foodapp.data.remote.MealApi.MealsCountryResponse;
 import com.example.foodapp.data.remote.model.Area;
 import com.example.foodapp.data.remote.model.Category;
 import com.example.foodapp.data.remote.model.Ingredient;
@@ -16,12 +14,11 @@ import com.example.foodapp.utils.CachedList;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.concurrent.TimeUnit;
@@ -31,178 +28,192 @@ public class SearchPresenter {
     private HomeRepository homeRepository;
     private List<Meal> cachedMeals = new ArrayList<>();
     private CachedList cachedList = CachedList.getInstance();
-    private List<String> selectedCategories = new ArrayList<>();
-    private List<String> selectedCountries = new ArrayList<>();
-    private List<String> selectedIngredients = new ArrayList<>();
+    private String selectedCategory = null;
+    private String selectedCountry = null;
+    private String selectedIngredient = null;
 
     public SearchPresenter(SearchView view, HomeRepository homeRepository) {
         this.view = view;
         this.homeRepository = homeRepository;
     }
 
+    private Single<Meal> fetchMealDetails(Meal meal) {
+        return homeRepository.fetchMealDetailsFromAPI(meal.getIdMeal())
+                .map(MealResponse::getMeals)
+                .map(mealDetails -> mealDetails.isEmpty() ? meal : mealDetails.get(0))
+                .onErrorReturnItem(meal);
+    }
+
     @SuppressLint("CheckResult")
-    public void loadMeals() {
-        view.showLoading();
-
-        List<Observable<List<Meal>>> categoryRequests = selectedCategories.stream()
-                .map(category -> homeRepository.fetchMealsByCategory(category)
-                        .map(MealResponse::getMeals)
-                        .onErrorReturnItem(Collections.emptyList()))
-                .collect(Collectors.toList());
-
-        List<Observable<List<Meal>>> countryRequests = selectedCountries.stream()
-                .map(country -> homeRepository.fetchMealsByArea(country)
-                        .map(MealResponse::getMeals)
-                        .onErrorReturnItem(Collections.emptyList()))
-                .collect(Collectors.toList());
-
-        List<Observable<List<Meal>>> ingredientRequests = selectedIngredients.stream()
-                .map(ingredient -> homeRepository.fetchMealsByIngredient(ingredient)
-                        .map(MealResponse::getMeals)
-                        .onErrorReturnItem(Collections.emptyList()))
-                .collect(Collectors.toList());
-
-        List<Observable<List<Meal>>> allRequests = new ArrayList<>();
-        allRequests.addAll(categoryRequests);
-        allRequests.addAll(countryRequests);
-        allRequests.addAll(ingredientRequests);
-
-        Observable.zip(allRequests, results -> {
-                    List<Meal> combinedMeals = new ArrayList<>();
-                    for (Object result : results) {
-                        combinedMeals.addAll((List<Meal>) result);
-                    }
-                    return combinedMeals;
-                })
-                .flatMapIterable(meals -> meals)
-                .distinct(Meal::getIdMeal)
-                .flatMapSingle(meal -> homeRepository.fetchMealDetailsFromAPI(meal.getIdMeal())
-                        .map(MealResponse::getMeals)
-                        .map(mealDetails -> mealDetails.isEmpty() ? meal : mealDetails.get(0))
-                        .onErrorReturnItem(meal)
+    public void loadFilterOptions() {
+        Observable.zip(
+                        Observable.fromCallable(() -> cachedList.getCategories().stream().map(Category::getStrCategory).collect(Collectors.toList())),
+                        Observable.fromCallable(() -> cachedList.getCountries().stream().map(Area::getName).collect(Collectors.toList())),
+                        Observable.fromCallable(() -> cachedList.getIngredients().stream().map(Ingredient::getName).collect(Collectors.toList())),
+                        (categories, countries, ingredients) -> new Object[]{categories, countries, ingredients}
                 )
-                .toList()
-                .toObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        meals -> {
-                            Log.d("Debug", "Meals loaded: " + meals.size());
-                            cachedMeals.clear();
-                            cachedMeals.addAll(meals);
+                        results -> {
+                            List<String> categories = (List<String>) results[0];
+                            List<String> countries = (List<String>) results[1];
+                            List<String> ingredients = (List<String>) results[2];
 
-                            view.hideLoading();
+                            view.updateFilterOptions("categories", categories);
+                            view.updateFilterOptions("countries", countries);
+                            view.updateFilterOptions("ingredients", ingredients);
+                        },
+                        throwable -> Log.e("Error", "Error loading filter options", throwable)
+                );
+    }
+
+    @SuppressLint("CheckResult")
+    public void filterBy(String filterType, String value) {
+        if ("All".equals(value)) {
+            clearAllFilters();
+            return;
+        }
+
+        selectedCategory = null;
+        selectedCountry = null;
+        selectedIngredient = null;
+
+        switch (filterType) {
+            case "categories":
+                selectedCategory = value;
+                break;
+            case "countries":
+                selectedCountry = value;
+                break;
+            case "ingredients":
+                selectedIngredient = value;
+                break;
+        }
+
+        applyFilters();
+    }
+
+    @SuppressLint("CheckResult")
+    private void applyFilters() {
+        view.showLoading();
+
+        Observable<List<Meal>> source = null;
+        if (selectedCategory != null) {
+            source = fetchMealsByCategory(selectedCategory);
+        } else if (selectedCountry != null) {
+            source = fetchMealsByCountry(selectedCountry);
+        } else if (selectedIngredient != null) {
+            source = fetchMealsByIngredient(selectedIngredient);
+        }
+
+        if (source != null) {
+            source.flatMapIterable(meals -> meals)
+                    .distinct(Meal::getIdMeal)
+                    .flatMapSingle(this::fetchMealDetails)
+                    .toList()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            meals -> {
+                                cachedMeals.clear();
+                                cachedMeals.addAll(meals);
+                                view.hideLoading();
+                                view.clearSearchResults();
+                                view.updateSearchResults(cachedMeals);
+                            },
+                            throwable -> {
+                                view.hideLoading();
+                                view.showAlert("Error loading meals", true);
+                            }
+                    );
+        }
+    }
+
+    private Observable<List<Meal>> fetchMealsByCategory(String category) {
+        return homeRepository.fetchMealsByCategory(category)
+                .map(MealResponse::getMeals)
+                .onErrorReturnItem(Collections.emptyList());
+    }
+
+    private Observable<List<Meal>> fetchMealsByCountry(String country) {
+        return homeRepository.fetchMealsByArea(country)
+                .map(MealResponse::getMeals)
+                .onErrorReturnItem(Collections.emptyList());
+    }
+
+    private Observable<List<Meal>> fetchMealsByIngredient(String ingredient) {
+        return homeRepository.fetchMealsByIngredient(ingredient)
+                .map(MealResponse::getMeals)
+                .onErrorReturnItem(Collections.emptyList());
+    }
+
+    @SuppressLint("CheckResult")
+    public void searchQueryChanged(String query) {
+        Observable.just(query)
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> selectSearchType(result),
+                        throwable -> view.showAlert("Error fetching meals", true)
+                );
+    }
+
+    private void selectSearchType(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            view.clearSearchResults();
+            return;
+        }
+
+        if (selectedCategory == null && selectedCountry == null && selectedIngredient == null) {
+            if (query.length() == 1) {
+                fetchMealsByFirstLetter(query);
+            } else {
+                filterMeals(query);
+            }
+        } else {
+            filterMeals(query);
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    public void fetchMealsByFirstLetter(String letter) {
+        view.showLoading();
+        homeRepository.listMealsByFirstLetter(letter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        response -> {
+                            cachedMeals.clear();
+                            cachedMeals = response.getMeals() != null ? response.getMeals() : new ArrayList<>();
                             view.updateSearchResults(cachedMeals);
+                            view.hideLoading();
                         },
                         throwable -> {
-                            Log.e("Debug", "Error loading meals", throwable);
                             view.showAlert("Error fetching meals", true);
                             view.hideLoading();
                         }
                 );
     }
 
-    @SuppressLint("CheckResult")
-    public void loadFilterOptions() {
-        view.updateFilterOptions("categories", cachedList.getCategories().stream().map(Category::getStrCategory).collect(Collectors.toList()));
-        view.updateFilterOptions("countries", cachedList.getCountries().stream().map(Area::getName).collect(Collectors.toList()));
-        view.updateFilterOptions("ingredients", cachedList.getIngredients().stream().map(Ingredient::getName).collect(Collectors.toList()));
-    }
-
-    public void filterBy(String filterType, String value){
-        switch (filterType){
-            case "categories":
-                selectedCategories.clear();
-                selectedCategories.add(value);
-                break;
-            case "countries":
-                selectedCategories.clear();
-                selectedCountries.add(value);
-                break;
-            case "ingredients":
-                selectedCategories.clear();
-                selectedIngredients.add(value);
-                break;
-    }
-        loadMeals();
-    }
-
-    public void setFilters(List<String> categoryFilter, List<String> countryFilter, List<String> ingredientFilter) {
-        this.selectedCategories = categoryFilter;
-        this.selectedCountries = countryFilter;
-        this.selectedIngredients = ingredientFilter;
-        loadMeals();
-    }
-
-
-
-    @SuppressLint("CheckResult")
-    public void searchQueryChanged(String query) {
-        Observable.just(query)
-            .debounce(200, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                    result -> selectSearchType(result),
-                    throwable -> view.showAlert("Error fetching meals", true)
-            );
-    }
-
-    private void selectSearchType(String query) {
-        if (!query.isEmpty()) {
-            filterMeals(query);
-        } else {
-            selectedCategories.clear();
-            selectedCountries.clear();
-            selectedIngredients.clear();
-            view.clearSearchResults();
-        }
-    }
-
-
-    @SuppressLint("CheckResult")
-    public void fetchMealsByFirstLetter(String letter) {
-        homeRepository.listMealsByFirstLetter(letter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        response -> {
-                            cachedMeals = response.getMeals() != null ? response.getMeals() : new ArrayList<>();
-                            view.updateSearchResults(cachedMeals);
-                            view.hideLoading();
-                        },
-                        throwable -> {
-                            view.showAlert("Error fetching meals",true);
-                            view.hideLoading();
-                        }
-                );
-    }
-
-    public void filterMeals(String query) {
-        List<Meal> filteredMeals = new ArrayList<>();
-        for (Meal meal : cachedMeals) {
-            boolean matchesCategory = selectedCategories.contains(meal.getCategory().toLowerCase());
-            boolean matchesCountry = selectedCountries.contains(meal.getArea());
-            boolean matchesIngredient = meal.getIngredients().stream().anyMatch(selectedIngredients::contains);
-
-            if (matchesCategory || matchesCountry || matchesIngredient) {
-                filteredMeals.add(meal);
-            }
-        }
-
-        filteredMeals = filteredMeals.stream()
-                .filter(meal -> meal.getMealName() != null && meal.getMealName().toLowerCase().contains(query.toLowerCase()))
+    private void filterMeals(String query) {
+        List<Meal> filteredMeals = cachedMeals.stream()
+                .filter(meal -> meal.getMealName().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
 
-
-        if (filteredMeals.isEmpty()){
-            view.showAlert("No meals found",true);
-            view.updateSearchResults(cachedMeals);
-            return;
+        if (filteredMeals.isEmpty()) {
+            view.showAlert("No meals found", true);
         }
         view.updateSearchResults(filteredMeals);
     }
 
+    public void clearAllFilters() {
+        selectedCategory = null;
+        selectedCountry = null;
+        selectedIngredient = null;
+        cachedMeals.clear();
 
-
+        view.clearSearchResults();
+        view.updateSearchResults(cachedMeals);
+    }
 }

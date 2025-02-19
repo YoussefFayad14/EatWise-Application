@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/mealImage"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:layout_gravity=""
             android:src="@drawable/img_meal_day"/>
@@ -41,9 +41,11 @@
 
                 <TextView
                     android:id="@+id/mealName"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/meal_name"
+                    android:maxWidth="150dp"
+                    android:ellipsize="end"
                     android:textAppearance="?android:textAppearanceLarge" />
 
                 <View
