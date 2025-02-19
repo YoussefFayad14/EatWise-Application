@@ -75,6 +75,8 @@
     <string name="need_to_register">Need To Register</string>
     <string name="youtube">Youtube</string>
     <string name="measures">Measures</string>
+    <string name="login_as_user_to_add_to_favorites">Login as user to add to favorites</string>
+    <string name="meal_added_to_favorites">Meal added to favorites</string>
     <string-array name="week_days">
         <item>Saturday</item>
         <item>Sunday</item>

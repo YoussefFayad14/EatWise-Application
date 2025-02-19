@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -77,6 +78,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
         btnRegister = view.findViewById(R.id.btn_register);
         btnGoogleRegister = view.findViewById(R.id.btn_google_register);
 
+        onBack();
         etPassword.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 int drawableEnd = 2;
@@ -153,5 +155,13 @@ public class RegisterFragment extends Fragment implements RegisterView {
     @Override
     public void setRegisterButtonEnabled(boolean enabled) {
         btnRegister.setEnabled(enabled);
+    }
+
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
     }
 }

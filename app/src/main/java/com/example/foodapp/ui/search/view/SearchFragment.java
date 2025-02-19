@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -75,6 +76,7 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         searchAdapter = new SearchAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setAdapter(searchAdapter);
 
+        onBack();
         backButton.setOnClickListener(view1 -> navigateToMainFragment());
 
         applyButton.setOnClickListener(view1 -> {
@@ -340,6 +342,12 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
         Bundle bundle = new Bundle();
         bundle.putSerializable("meal", meal);
         Navigation.findNavController(requireView()).navigate(R.id.action_searchFragment_to_mealDetailsFragment, bundle);
+    }
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {}
+        });
     }
 
 }

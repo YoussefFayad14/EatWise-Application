@@ -2,6 +2,8 @@ package com.example.foodapp.ui.weekplan.view;
 
 import android.icu.util.Calendar;
 import android.os.Bundle;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
@@ -105,6 +107,7 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
         btnRegister.setOnClickListener(v -> Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_registerFragment));
         btnAddNewMeal.setOnClickListener(v -> addNewMeal());
 
+        onBack();
         return view;
     }
 
@@ -168,6 +171,14 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
     @Override
     public void onDayClick(String day) {
         presenter.loadMealsForDay(day);
+    }
+
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
     }
 
 
