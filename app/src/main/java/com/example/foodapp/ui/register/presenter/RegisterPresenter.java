@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterPresenter {
     private RegisterView view;
@@ -53,9 +54,16 @@ public class RegisterPresenter {
                     view.setRegisterButtonEnabled(true);
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        userPreferences.saveUserLogin(username, user.getEmail());
-                        dataSyncUtil.syncUserData();
-                        view.navigateToMain();
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(username)
+                                .build();
+                        user.updateProfile(profileUpdates).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                userPreferences.saveUserLogin(username, user.getEmail());
+                                dataSyncUtil.syncUserData();
+                                view.navigateToMain();
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(e -> {

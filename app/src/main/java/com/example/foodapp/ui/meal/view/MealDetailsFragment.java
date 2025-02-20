@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -46,7 +47,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
 
         if (getArguments() != null) {
             meal = getArguments().getParcelable("meal");
-            presenter = new MealDetailsPresenter(this, meal, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
+            presenter = new MealDetailsPresenter(getContext(),this, meal, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
         }
     }
 
@@ -67,6 +68,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         backButton = view.findViewById(R.id.back_Button2);
         popupSnackbar = new PopupSnackbar(requireContext());
 
+        onBack();
         presenter.loadMealDetails();
 
         backButton.setOnClickListener(v -> presenter.onBackPressed());
@@ -162,5 +164,12 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
     @Override
     public void handleBackNavigation() {
         Navigation.findNavController(getView()).navigate(R.id.action_mealDetailsFragment_to_mainFragment);
+    }
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
     }
 }

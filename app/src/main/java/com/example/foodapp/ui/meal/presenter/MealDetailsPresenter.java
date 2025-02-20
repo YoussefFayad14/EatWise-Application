@@ -1,22 +1,29 @@
 package com.example.foodapp.ui.meal.presenter;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
+import com.example.foodapp.R;
 import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Meal;
 import com.example.foodapp.data.repository.FavoriteMealRepository;
 import com.example.foodapp.ui.favorite.presenter.FavoritePresenter;
 import com.example.foodapp.ui.meal.view.MealDetailsView;
+import com.example.foodapp.utils.UserPreferences;
 
 public class MealDetailsPresenter{
+    private final Context context;
     private final MealDetailsView  view;
     private final Meal meal;
+    private final UserPreferences userPreferences;
     private final FavoritePresenter favoritePresenter;
 
-    public MealDetailsPresenter(MealDetailsView view, Meal meal, FavoriteMealRepository favoriteMealRepository) {
+    public MealDetailsPresenter(Context context, MealDetailsView view, Meal meal, FavoriteMealRepository favoriteMealRepository) {
+        this.context = context;
         this.view = view;
         this.meal = meal;
         favoritePresenter = new FavoritePresenter(null, favoriteMealRepository);
+        userPreferences = new UserPreferences(context);
     }
 
     public void loadMealDetails() {
@@ -46,8 +53,13 @@ public class MealDetailsPresenter{
 
     @SuppressLint("CheckResult")
     public void addToFavorites(FavoriteMeal meal) {
-        favoritePresenter.addToFavorites(meal);
-        view.showMessage("Meal added to favorites", false);
+        if(userPreferences.isGuest()){
+            view.showMessage(context.getString(R.string.login_as_user_to_add_to_favorites), true);
+        }
+        else {
+            favoritePresenter.addToFavorites(meal);
+            view.showMessage(context.getString(R.string.meal_added_to_favorites), false);
+        }
     }
 
 

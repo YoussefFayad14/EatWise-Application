@@ -40,7 +40,7 @@ public class LoginPresenter{
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = auth.getCurrentUser();
-                    if (user != null && user.isEmailVerified()) {
+                    if (user != null) {
                         userPreferences.saveUserLogin(user.getDisplayName(), user.getEmail());
                         dataSyncUtil.syncUserData();
                         view.navigateToMain();

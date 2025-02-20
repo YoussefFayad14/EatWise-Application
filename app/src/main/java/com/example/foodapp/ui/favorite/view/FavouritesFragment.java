@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,7 +70,7 @@ public class FavouritesFragment extends Fragment implements onClickListener, Fav
             recyclerView.setVisibility(View.VISIBLE);
         }
 
-
+        onBack();
         return view;
     }
 
@@ -100,5 +102,12 @@ public void showFavoriteMeals(List<FavoriteMeal> favoriteMeals) {
     @Override
     public void RemoveFromFavouritesClick(FavoriteMeal meal) {
         presenter.removeFromFavorites(meal);
+    }
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
     }
 }

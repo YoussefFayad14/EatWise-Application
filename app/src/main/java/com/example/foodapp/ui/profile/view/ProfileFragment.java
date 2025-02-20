@@ -1,6 +1,8 @@
 package com.example.foodapp.ui.profile.view;
 
 import android.os.Bundle;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -42,6 +44,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
         etUsername = view.findViewById(R.id.et_username);
         etEmail = view.findViewById(R.id.et_email);
 
+        onBack();
         presenter.loadUserData();
 
         btnLogout.setOnClickListener(v -> presenter.logOut());
@@ -62,5 +65,13 @@ public class ProfileFragment extends Fragment implements ProfileView {
         if (getView() != null && isAdded()) {
             Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_loginFragment);
         }
+    }
+
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
     }
 }

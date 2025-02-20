@@ -3,6 +3,8 @@ package com.example.foodapp.ui.login.view;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -81,6 +83,7 @@ public class LoginFragment extends Fragment implements LoginView {
         btnLoginAsUser = view.findViewById(R.id.btn_loginAsUser);
         btnGoogleLogin = view.findViewById(R.id.btn_google_login);
 
+        onBack();
         etPassword.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 int drawableEnd = 2;
@@ -150,5 +153,13 @@ public class LoginFragment extends Fragment implements LoginView {
     public void clearFields() {
         etEmail.setText("");
         etPassword.setText("");
+    }
+
+    private void onBack(){
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        });
     }
 }
