@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +20,7 @@ import com.example.foodapp.ui.splash.presenter.SplashPresenter;
 
 public class SplashFragment extends Fragment implements SplashView {
     private SplashPresenter presenter;
+    private TextView appName;
 
     public SplashFragment() {}
 
@@ -45,7 +49,18 @@ public class SplashFragment extends Fragment implements SplashView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        appName = view.findViewById(R.id.tvAppName);
+        Animation fadeIn = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in);
+        appName.startAnimation(fadeIn);
+
+        loadAppAnimation();
         presenter.checkUserLogin();
+    }
+
+
+    private void loadAppAnimation() {
+        new Handler().postDelayed(() -> {
+        }, 3000);
     }
 
     @Override
@@ -55,9 +70,6 @@ public class SplashFragment extends Fragment implements SplashView {
 
     @Override
     public void navigateToLogin() {
-        new Handler().postDelayed(() ->
-                        Navigation.findNavController(requireView()).navigate(R.id.action_splashFragment_to_loginFragment),
-                3000
-        );
+        Navigation.findNavController(requireView()).navigate(R.id.action_splashFragment_to_loginFragment);
     }
 }
