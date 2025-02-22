@@ -73,5 +73,5 @@ EatWise is an Android application designed to help users plan their weekly meals
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-For any inquiries or suggestions, feel free to contact **Youssef Adel**.
+For any inquiries or suggestions, feel free to contact **Me**.
 
