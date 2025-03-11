@@ -6,7 +6,7 @@ import android.content.Context;
 import com.example.foodapp.R;
 import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Meal;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
 import com.example.foodapp.ui.favorite.presenter.FavoritePresenter;
 import com.example.foodapp.ui.meal.view.MealDetailsView;
 import com.example.foodapp.utils.UserPreferences;
@@ -18,11 +18,11 @@ public class MealDetailsPresenter{
     private final UserPreferences userPreferences;
     private final FavoritePresenter favoritePresenter;
 
-    public MealDetailsPresenter(Context context, MealDetailsView view, Meal meal, FavoriteMealRepository favoriteMealRepository) {
+    public MealDetailsPresenter(Context context, MealDetailsView view, Meal meal, FavoriteMealsRepository favoriteMealsRepository) {
         this.context = context;
         this.view = view;
         this.meal = meal;
-        favoritePresenter = new FavoritePresenter(null, favoriteMealRepository);
+        favoritePresenter = new FavoritePresenter(null, favoriteMealsRepository);
         userPreferences = new UserPreferences(context);
     }
 

@@ -3,7 +3,7 @@ package com.example.foodapp.ui.home.presenter;
 import android.annotation.SuppressLint;
 
 import com.example.foodapp.data.remote.model.CountryMapper;
-import com.example.foodapp.data.repository.HomeRepository;
+import com.example.foodapp.data.repository.MealsRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.home.view.HomeView;
 import com.example.foodapp.utils.CachedList;
@@ -15,18 +15,18 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenter {
     private final HomeView view;
-    private final HomeRepository homeRepository;
+    private final MealsRepository mealsRepository;
     private final LocationRepository locationRepository;
     private final CachedList cachedList = CachedList.getInstance();
 
-    public HomePresenter(HomeView view, HomeRepository homeRepository, LocationRepository locationRepository) {
+    public HomePresenter(HomeView view, MealsRepository mealsRepository, LocationRepository locationRepository) {
         this.view = view;
-        this.homeRepository = homeRepository;
+        this.mealsRepository = mealsRepository;
         this.locationRepository = locationRepository;
     }
     @SuppressLint("CheckResult")
     public void loadSelectedMeal(String mealId) {
-        homeRepository.fetchMealDetailsFromAPI(mealId)
+        mealsRepository.fetchMealDetailsFromAPI(mealId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -39,7 +39,7 @@ public class HomePresenter {
     }
     @SuppressLint("CheckResult")
     public void loadRandomMeal() {
-        homeRepository.fetchRandomMealFromAPI()
+        mealsRepository.fetchRandomMealFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -62,7 +62,7 @@ public class HomePresenter {
         locationRepository.fetchLocationFromAPI()
                 .flatMapObservable(ipApiResponse -> {
                     ref.country = CountryMapper.getMappedCountry(ipApiResponse.getCountry());
-                    return homeRepository.fetchMealsByArea(ref.country);
+                    return mealsRepository.fetchMealsByArea(ref.country);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,7 +89,7 @@ public class HomePresenter {
             view.showCountries(cachedList.getCountries());
             return;
         }
-        homeRepository.fetchCountriesFromAPI()
+        mealsRepository.fetchCountriesFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -111,7 +111,7 @@ public class HomePresenter {
             view.showCategories(cachedList.getCategories());
             return;
         }
-        homeRepository.fetchCategoriesFromAPI()
+        mealsRepository.fetchCategoriesFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -133,7 +133,7 @@ public class HomePresenter {
             view.showIngredients(cachedList.getIngredients());
             return;
         }
-        homeRepository.fetchIngredientsFromAPI()
+        mealsRepository.fetchIngredientsFromAPI()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

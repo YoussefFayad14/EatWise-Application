@@ -6,16 +6,15 @@ import com.example.foodapp.data.remote.MealApi.AreasResponse;
 import com.example.foodapp.data.remote.MealApi.CategoriesResponse;
 import com.example.foodapp.data.remote.MealApi.IngredientResponse;
 import com.example.foodapp.data.remote.MealApi.MealResponse;
-import com.example.foodapp.data.remote.MealApi.MealsCountryResponse;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 
-public class HomeRepository {
+public class MealsRepository {
 
     private final ApiService apiService;
 
-    public HomeRepository() {
+    public MealsRepository() {
         this.apiService = ApiClient.getClient().create(ApiService.class);
     }
 

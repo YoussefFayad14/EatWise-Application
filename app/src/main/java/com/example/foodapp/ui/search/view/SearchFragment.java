@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.remote.model.Meal;
-import com.example.foodapp.data.repository.HomeRepository;
+import com.example.foodapp.data.repository.MealsRepository;
 import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.ui.search.presenter.SearchPresenter;
 import com.google.android.material.chip.Chip;
@@ -55,7 +55,7 @@ public class SearchFragment extends Fragment implements OnMealClickListener, Sea
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        searchPresenter = new SearchPresenter(this, new HomeRepository());
+        searchPresenter = new SearchPresenter(this, new MealsRepository());
 
         searchEditText = view.findViewById(R.id.ed_search_toolbar);
         backButton = view.findViewById(R.id.back_Button);

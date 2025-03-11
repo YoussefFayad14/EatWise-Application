@@ -22,7 +22,7 @@ import com.example.foodapp.data.remote.model.Area;
 import com.example.foodapp.data.remote.model.Category;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
-import com.example.foodapp.data.repository.HomeRepository;
+import com.example.foodapp.data.repository.MealsRepository;
 import com.example.foodapp.data.repository.LocationRepository;
 import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.ui.dialogs.NetworkDialog;
@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment implements onClickListener, HomeView 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        presenter = new HomePresenter(this, new HomeRepository(), new LocationRepository());
+        presenter = new HomePresenter(this, new MealsRepository(), new LocationRepository());
 
         retryLayout = view.findViewById(R.id.retryLayout);
         contentView = view.findViewById(R.id.contentScrollView);

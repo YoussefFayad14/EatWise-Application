@@ -8,7 +8,7 @@ import com.example.foodapp.data.remote.model.Area;
 import com.example.foodapp.data.remote.model.Category;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
-import com.example.foodapp.data.repository.HomeRepository;
+import com.example.foodapp.data.repository.MealsRepository;
 import com.example.foodapp.ui.search.view.SearchView;
 import com.example.foodapp.utils.CachedList;
 
@@ -25,20 +25,20 @@ import java.util.concurrent.TimeUnit;
 
 public class SearchPresenter {
     private SearchView view;
-    private HomeRepository homeRepository;
+    private MealsRepository mealsRepository;
     private List<Meal> cachedMeals = new ArrayList<>();
     private CachedList cachedList = CachedList.getInstance();
     private String selectedCategory = null;
     private String selectedCountry = null;
     private String selectedIngredient = null;
 
-    public SearchPresenter(SearchView view, HomeRepository homeRepository) {
+    public SearchPresenter(SearchView view, MealsRepository mealsRepository) {
         this.view = view;
-        this.homeRepository = homeRepository;
+        this.mealsRepository = mealsRepository;
     }
 
     private Single<Meal> fetchMealDetails(Meal meal) {
-        return homeRepository.fetchMealDetailsFromAPI(meal.getIdMeal())
+        return mealsRepository.fetchMealDetailsFromAPI(meal.getIdMeal())
                 .map(MealResponse::getMeals)
                 .map(mealDetails -> mealDetails.isEmpty() ? meal : mealDetails.get(0))
                 .onErrorReturnItem(meal);
@@ -131,19 +131,19 @@ public class SearchPresenter {
     }
 
     private Observable<List<Meal>> fetchMealsByCategory(String category) {
-        return homeRepository.fetchMealsByCategory(category)
+        return mealsRepository.fetchMealsByCategory(category)
                 .map(MealResponse::getMeals)
                 .onErrorReturnItem(Collections.emptyList());
     }
 
     private Observable<List<Meal>> fetchMealsByCountry(String country) {
-        return homeRepository.fetchMealsByArea(country)
+        return mealsRepository.fetchMealsByArea(country)
                 .map(MealResponse::getMeals)
                 .onErrorReturnItem(Collections.emptyList());
     }
 
     private Observable<List<Meal>> fetchMealsByIngredient(String ingredient) {
-        return homeRepository.fetchMealsByIngredient(ingredient)
+        return mealsRepository.fetchMealsByIngredient(ingredient)
                 .map(MealResponse::getMeals)
                 .onErrorReturnItem(Collections.emptyList());
     }
@@ -179,7 +179,7 @@ public class SearchPresenter {
     @SuppressLint("CheckResult")
     public void fetchMealsByFirstLetter(String letter) {
         view.showLoading();
-        homeRepository.listMealsByFirstLetter(letter)
+        mealsRepository.listMealsByFirstLetter(letter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

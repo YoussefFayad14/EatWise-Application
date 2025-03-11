@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.local.model.FavoriteMeal;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.WeekPlanRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
+import com.example.foodapp.data.repository.WeekPlanMealsRepository;
 import com.example.foodapp.ui.favorite.presenter.FavoritePresenter;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
 import com.example.foodapp.utils.Converters;
@@ -55,7 +54,7 @@ public class FavouritesFragment extends Fragment implements onClickListener, Fav
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new FavoriteAdapter(getContext(), FavMealList, this);
         recyclerView.setAdapter(adapter);
-        presenter = new FavoritePresenter(this, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
+        presenter = new FavoritePresenter(this, new FavoriteMealsRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
 
         btnRegister.setOnClickListener(v -> {
             Navigation.findNavController(getView()).navigate(R.id.action_mainFragment_to_registerFragment);
@@ -92,8 +91,8 @@ public void showFavoriteMeals(List<FavoriteMeal> favoriteMeals) {
         WeekPlanPresenter weekPlanPresenter = new WeekPlanPresenter(
                 getContext(),
                 null,
-                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
-                new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
+                new WeekPlanMealsRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
+                new FavoriteMealsRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
         );
         MealPlanDialogSheet bottomSheet = new MealPlanDialogSheet(meal, weekPlanPresenter);
         bottomSheet.show(getParentFragmentManager(), "MealPlanBottomSheet");

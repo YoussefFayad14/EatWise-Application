@@ -29,8 +29,8 @@ import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.local.model.CalendarDay;
 import com.example.foodapp.data.local.model.MealPlan;
 import com.example.foodapp.data.remote.model.Meal;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.WeekPlanRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
+import com.example.foodapp.data.repository.WeekPlanMealsRepository;
 import com.example.foodapp.ui.favorite.view.FavouritesFragment;
 import com.example.foodapp.ui.weekplan.presenter.WeekPlanPresenter;
 import com.example.foodapp.ui.dialogs.PopupSnackbar;
@@ -63,8 +63,8 @@ public class WeekPlanFragment extends Fragment implements OnDayClickListener,OnM
         presenter = new WeekPlanPresenter(
                 getContext(),
                 this,
-                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
-                new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
+                new WeekPlanMealsRepository(AppDatabase.getInstance(getContext()).mealPlanDao()),
+                new FavoriteMealsRepository(AppDatabase.getInstance(getContext()).favoriteMealDao())
         );
 
         recyclerViewCalendar = view.findViewById(R.id.recyclerViewCalendar);

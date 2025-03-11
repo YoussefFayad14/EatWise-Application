@@ -12,12 +12,12 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class WeekPlanRepository {
+public class WeekPlanMealsRepository {
     private MealPlanDao mealPlanDao;
     private FirebaseService firebaseService = new FirebaseService();
 
 
-    public WeekPlanRepository(MealPlanDao mealPlanDao) {
+    public WeekPlanMealsRepository(MealPlanDao mealPlanDao) {
         this.mealPlanDao = mealPlanDao;
     }
 

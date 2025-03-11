@@ -22,7 +22,7 @@ import com.example.foodapp.data.local.AppDatabase;
 import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.remote.model.Ingredient;
 import com.example.foodapp.data.remote.model.Meal;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
 import com.example.foodapp.ui.meal.presenter.MealDetailsPresenter;
 import com.example.foodapp.ui.dialogs.PopupSnackbar;
 import com.example.foodapp.utils.NetworkUtil;
@@ -47,7 +47,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
 
         if (getArguments() != null) {
             meal = getArguments().getParcelable("meal");
-            presenter = new MealDetailsPresenter(getContext(),this, meal, new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
+            presenter = new MealDetailsPresenter(getContext(),this, meal, new FavoriteMealsRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()));
         }
     }
 

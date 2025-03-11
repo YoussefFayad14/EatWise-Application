@@ -3,7 +3,7 @@ package com.example.foodapp.ui.favorite.presenter;
 import android.annotation.SuppressLint;
 
 import com.example.foodapp.data.local.model.FavoriteMeal;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
 import com.example.foodapp.ui.favorite.view.FavoriteView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -12,8 +12,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FavoritePresenter {
     private FavoriteView view;
-    private FavoriteMealRepository repository;
-    public FavoritePresenter(FavoriteView view, FavoriteMealRepository repository) {
+    private FavoriteMealsRepository repository;
+    public FavoritePresenter(FavoriteView view, FavoriteMealsRepository repository) {
         this.view = view;
         this.repository = repository;
     }

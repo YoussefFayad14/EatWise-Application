@@ -1,10 +1,7 @@
 package com.example.foodapp.data.repository;
 
-import android.util.Log;
-
 import com.example.foodapp.data.local.model.FavoriteMeal;
 import com.example.foodapp.data.local.FavoriteMealDao;
-import com.example.foodapp.data.local.model.MealPlan;
 import com.example.foodapp.data.remote.FirebaseService;
 
 import java.util.List;
@@ -15,11 +12,11 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FavoriteMealRepository {
+public class FavoriteMealsRepository {
     private FavoriteMealDao favoriteMealDao;
     private FirebaseService firebaseService = new FirebaseService();
 
-    public FavoriteMealRepository(FavoriteMealDao favoriteMealDao) {
+    public FavoriteMealsRepository(FavoriteMealDao favoriteMealDao) {
         this.favoriteMealDao = favoriteMealDao;
     }
 

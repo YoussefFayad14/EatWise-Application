@@ -3,8 +3,8 @@ package com.example.foodapp.ui.login.presenter;
 import android.content.Context;
 import android.util.Patterns;
 
-import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.WeekPlanRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
+import com.example.foodapp.data.repository.WeekPlanMealsRepository;
 import com.example.foodapp.ui.login.view.LoginFragment;
 import com.example.foodapp.ui.login.view.LoginView;
 import com.example.foodapp.utils.DataSyncUtil;
@@ -21,11 +21,11 @@ public class LoginPresenter{
     private final UserPreferences userPreferences;
     private DataSyncUtil dataSyncUtil;
 
-    public LoginPresenter(LoginFragment view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
+    public LoginPresenter(LoginFragment view, Context context, FavoriteMealsRepository favoriteMealsRepository, WeekPlanMealsRepository weekPlanMealsRepository) {
         this.view = view;
         this.auth = FirebaseAuth.getInstance();
         this.userPreferences = new UserPreferences(context);
-        this.dataSyncUtil = new DataSyncUtil(context,favoriteMealRepository, weekPlanRepository);
+        this.dataSyncUtil = new DataSyncUtil(context, favoriteMealsRepository, weekPlanMealsRepository);
     }
 
     public void loginWithEmail(String email, String password) {

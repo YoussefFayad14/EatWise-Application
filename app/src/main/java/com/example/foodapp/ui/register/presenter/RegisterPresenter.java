@@ -3,8 +3,8 @@ package com.example.foodapp.ui.register.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.WeekPlanRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
+import com.example.foodapp.data.repository.WeekPlanMealsRepository;
 import com.example.foodapp.ui.register.ui.RegisterView;
 import com.example.foodapp.utils.DataSyncUtil;
 import com.example.foodapp.utils.UserPreferences;
@@ -26,11 +26,11 @@ public class RegisterPresenter {
     private DataSyncUtil dataSyncUtil;
 
 
-    public RegisterPresenter(RegisterView view, Context context, FavoriteMealRepository favoriteMealRepository, WeekPlanRepository weekPlanRepository) {
+    public RegisterPresenter(RegisterView view, Context context, FavoriteMealsRepository favoriteMealsRepository, WeekPlanMealsRepository weekPlanMealsRepository) {
         this.view = view;
         this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
-        this.dataSyncUtil = new DataSyncUtil(context,favoriteMealRepository, weekPlanRepository);
+        this.dataSyncUtil = new DataSyncUtil(context, favoriteMealsRepository, weekPlanMealsRepository);
         this.userPreferences = new UserPreferences(context);
     }
 

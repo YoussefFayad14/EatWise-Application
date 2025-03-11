@@ -23,8 +23,8 @@ import android.widget.TextView;
 
 import com.example.foodapp.R;
 import com.example.foodapp.data.local.AppDatabase;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.WeekPlanRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
+import com.example.foodapp.data.repository.WeekPlanMealsRepository;
 import com.example.foodapp.ui.register.presenter.RegisterPresenter;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,8 +50,8 @@ public class RegisterFragment extends Fragment implements RegisterView {
         presenter = new RegisterPresenter(
                 this,
                 requireContext(),
-                new FavoriteMealRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()),
-                new WeekPlanRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
+                new FavoriteMealsRepository(AppDatabase.getInstance(getContext()).favoriteMealDao()),
+                new WeekPlanMealsRepository(AppDatabase.getInstance(getContext()).mealPlanDao())
                 );
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

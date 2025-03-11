@@ -2,12 +2,11 @@ package com.example.foodapp.ui.weekplan.presenter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 
 import com.example.foodapp.data.local.model.CalendarDay;
 import com.example.foodapp.data.local.model.MealPlan;
-import com.example.foodapp.data.repository.FavoriteMealRepository;
-import com.example.foodapp.data.repository.WeekPlanRepository;
+import com.example.foodapp.data.repository.FavoriteMealsRepository;
+import com.example.foodapp.data.repository.WeekPlanMealsRepository;
 import com.example.foodapp.ui.weekplan.view.OnMealClickListener;
 import com.example.foodapp.ui.weekplan.view.WeekPlanView;
 import com.example.foodapp.utils.Converters;
@@ -25,14 +24,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WeekPlanPresenter {
     private WeekPlanView view;
-    private WeekPlanRepository weekPlanRepository;
-    private FavoriteMealRepository favoriteMealRepository;
+    private WeekPlanMealsRepository weekPlanMealsRepository;
+    private FavoriteMealsRepository favoriteMealsRepository;
     private UserPreferences userPreferences;
 
-    public WeekPlanPresenter(Context context, WeekPlanView view, WeekPlanRepository weekPlanRepository, FavoriteMealRepository favoriteMealRepository) {
+    public WeekPlanPresenter(Context context, WeekPlanView view, WeekPlanMealsRepository weekPlanMealsRepository, FavoriteMealsRepository favoriteMealsRepository) {
         this.view = view;
-        this.weekPlanRepository = weekPlanRepository;
-        this.favoriteMealRepository = favoriteMealRepository;
+        this.weekPlanMealsRepository = weekPlanMealsRepository;
+        this.favoriteMealsRepository = favoriteMealsRepository;
         this.userPreferences = new UserPreferences(context);
     }
 
@@ -55,7 +54,7 @@ public class WeekPlanPresenter {
 
     @SuppressLint("CheckResult")
     public void addMealToPlan(MealPlan mealPlan) {
-        weekPlanRepository.addMeal(mealPlan)
+        weekPlanMealsRepository.addMeal(mealPlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -63,7 +62,7 @@ public class WeekPlanPresenter {
 
     @SuppressLint("CheckResult")
     public void removeMealFromPlan(MealPlan mealPlan) {
-        weekPlanRepository.removeMeal(mealPlan)
+        weekPlanMealsRepository.removeMeal(mealPlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -76,7 +75,7 @@ public class WeekPlanPresenter {
         if (!userPreferences.getLastCleanupDate().equals(today)){
             calendar.add(Calendar.DAY_OF_YEAR, -1);
             String yesterday = new SimpleDateFormat("EEEE", Locale.getDefault()).format(calendar.getTime());
-            weekPlanRepository.removeMealsForYesterday(yesterday)
+            weekPlanMealsRepository.removeMealsForYesterday(yesterday)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> userPreferences.setLastCleanupDate(today));
@@ -85,14 +84,14 @@ public class WeekPlanPresenter {
 
     @SuppressLint("CheckResult")
     public Completable clearAllMealPlans() {
-        return weekPlanRepository.removeAllMealPlans()
+        return weekPlanMealsRepository.removeAllMealPlans()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @SuppressLint("CheckResult")
     public void loadMealsForDay(String day) {
-        weekPlanRepository.getMealsForDay(day)
+        weekPlanMealsRepository.getMealsForDay(day)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -105,16 +104,16 @@ public class WeekPlanPresenter {
 
     @SuppressLint("CheckResult")
     public void getMealDetails(MealPlan mealPlan, OnMealClickListener listener) {
-        favoriteMealRepository.getMealById(mealPlan.getMealId())
+        favoriteMealsRepository.getMealById(mealPlan.getMealId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(meal -> listener.onMealLoaded(new Converters().fromFavoriteMeal(meal)));
     }
     @SuppressLint("CheckResult")
     public Completable syncMealPlans() {
-        return weekPlanRepository.syncMealPlansFromFirebase()
+        return weekPlanMealsRepository.syncMealPlansFromFirebase()
                 .flatMapIterable(mealPlans -> mealPlans)
-                .flatMapCompletable(mealPlan -> weekPlanRepository.resetMeal(mealPlan))
+                .flatMapCompletable(mealPlan -> weekPlanMealsRepository.resetMeal(mealPlan))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
